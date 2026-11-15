@@ -181,90 +181,6 @@ Kirim
 
 🎁 KLAIM KODE DONATUR
 
-
-// =====================================================================
-// WAJIB GANTI 2 BARIS DI BAWAH INI DENGAN DATA PROYEK SUPABASE KAMU!
-// =====================================================================
-const SUPABASE_URL = 'https://rrcqcgfqcftujpmiqozq.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_L1DPkaQN6l6HLjPTMNfO9w_ZIyzqnUu';
-// =====================================================================
-const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-let selectedSchool = '';
-let currentUser = null;
-function selectSchool(school, btn) {
-selectedSchool = school;
-document.querySelectorAll('.school-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-}
-async function handleAuth() {
-let username = document.getElementById('usernameInput').value.trim().toLowerCase();
-const pin = document.getElementById('pinInput').value.trim();
-if (!username) return alert('Isi @username_ig kamu dulu!');
-if (!username.startsWith('@')) username = '@' + username;
-if (pin.length !== 4 || isNaN(pin)) return alert('PIN harus 4 digit angka!');
-const btn = document.getElementById('loginBtn');
-btn.innerText = '⏳ MEMPROSES...';
-btn.disabled = true;
-if (!db) return alert('Koneksi ke server Supabase terblokir jaringan!');
-// Cek apakah akun sudah ada
-const { data: existing, error: fetchErr } = await db
-.from('players')
-.select('*')
-.eq('username', username)
-.maybeSingle();
-if (fetchErr) throw fetchErr;
-if (existing) {
-if (existing.pin !== pin) {
-alert('PIN salah! Coba masukkan 4 digit PIN yang benar.');
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
-return;
-}
-currentUser = existing;
-} else {
-if (!selectedSchool) {
-alert('Akun baru wajib memilih Asal Sekolah terlebih dahulu!');
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
-return;
-}
-const isPrincipal = (username === '@rdo.iny_' || username === '@rdo.iny');
-const newPlayer = {
-username: username,
-pin: pin,
-school: isPrincipal ? 'SEKOLAH VIP AO' : selectedSchool,
-power: isPrincipal ? 99 : 50,
-speed: isPrincipal ? 99 : 50,
-defense: isPrincipal ? 99 : 50,
-points: isPrincipal ? 50 : 5,
-wins: 0,
-losses: 0,
-donor_rank: isPrincipal ? 10 : 0,
-role: isPrincipal ? 'KEPALA SEKOLAH' : 'SISWA'
-};
-const { data: inserted, error: insErr } = await db
-.from('players')
-.insert([newPlayer])
-.select()
-.single();
-if (insErr) throw insErr;
-currentUser = inserted;
-}
-localStorage.setItem('tb_user', JSON.stringify(currentUser));
-renderGame();
-} catch (err) {
-alert('Gagal terhubung ke database: ' + err.message);
-} finally {
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
-}
-}
-function renderGame() {
-document.getElementById('authSection').classList.add('hidden');
-document.getElementById('gameSection').classList.remove('hidden');
-const ovr = Math.round((currentUser.power + currentUser.speed + currentUser.defense) / 3);
-document.getElementById('dispUser').innerText = currentUser.username;
-document.getElementById('dispSchool').innerText = currentUser.school;
 document.getElementById('dispOvr').innerText = ovr;
 document.getElementById('dispPts').innerText = currentUser.points;
 document.getElementById('dispWin').innerText = currentUser.wins;
@@ -415,3 +331,87 @@ renderGame();
 </script>
 </body>
 </html>
+// =====================================================================
+// WAJIB GANTI 2 BARIS DI BAWAH INI DENGAN DATA PROYEK SUPABASE KAMU!
+// =====================================================================
+const SUPABASE_URL = 'https://rrcqcgfqcftujpmiqozq.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_L1DPkaQN6l6HLjPTMNfO9w_ZIyzqnUu';
+// =====================================================================
+const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+let selectedSchool = '';
+let currentUser = null;
+function selectSchool(school, btn) {
+selectedSchool = school;
+document.querySelectorAll('.school-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+}
+async function handleAuth() {
+let username = document.getElementById('usernameInput').value.trim().toLowerCase();
+const pin = document.getElementById('pinInput').value.trim();
+if (!username) return alert('Isi @username_ig kamu dulu!');
+if (!username.startsWith('@')) username = '@' + username;
+if (pin.length !== 4 || isNaN(pin)) return alert('PIN harus 4 digit angka!');
+const btn = document.getElementById('loginBtn');
+btn.innerText = '⏳ MEMPROSES...';
+btn.disabled = true;
+if (!db) return alert('Koneksi ke server Supabase terblokir jaringan!');
+// Cek apakah akun sudah ada
+const { data: existing, error: fetchErr } = await db
+.from('players')
+.select('*')
+.eq('username', username)
+.maybeSingle();
+if (fetchErr) throw fetchErr;
+if (existing) {
+if (existing.pin !== pin) {
+alert('PIN salah! Coba masukkan 4 digit PIN yang benar.');
+btn.innerText = '🚀 MASUK KE ARENA';
+btn.disabled = false;
+return;
+}
+currentUser = existing;
+} else {
+if (!selectedSchool) {
+alert('Akun baru wajib memilih Asal Sekolah terlebih dahulu!');
+btn.innerText = '🚀 MASUK KE ARENA';
+btn.disabled = false;
+return;
+}
+const isPrincipal = (username === '@rdo.iny_' || username === '@rdo.iny');
+const newPlayer = {
+username: username,
+pin: pin,
+school: isPrincipal ? 'SEKOLAH VIP AO' : selectedSchool,
+power: isPrincipal ? 99 : 50,
+speed: isPrincipal ? 99 : 50,
+defense: isPrincipal ? 99 : 50,
+points: isPrincipal ? 50 : 5,
+wins: 0,
+losses: 0,
+donor_rank: isPrincipal ? 10 : 0,
+role: isPrincipal ? 'KEPALA SEKOLAH' : 'SISWA'
+};
+const { data: inserted, error: insErr } = await db
+.from('players')
+.insert([newPlayer])
+.select()
+.single();
+if (insErr) throw insErr;
+currentUser = inserted;
+}
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+renderGame();
+} catch (err) {
+alert('Gagal terhubung ke database: ' + err.message);
+} finally {
+btn.innerText = '🚀 MASUK KE ARENA';
+btn.disabled = false;
+}
+}
+function renderGame() {
+document.getElementById('authSection').classList.add('hidden');
+document.getElementById('gameSection').classList.remove('hidden');
+const ovr = Math.round((currentUser.power + currentUser.speed + currentUser.defense) / 3);
+document.getElementById('dispUser').innerText = currentUser.username;
+document.getElementById('dispSchool').innerText = currentUser.school;
+
