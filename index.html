@@ -182,7 +182,7 @@ const btn = document.getElementById('loginBtn');
 btn.innerText = '⏳ MEMPROSES...';
 btn.disabled = true;
 try {
-const res = await fetch(${SUPABASE_URL}/rest/v1/players?username=eq.${encodeURIComponent(username)}&select=*, { headers });
+const res = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(username) + '&select=*', { headers });
 if (!res.ok) throw new Error('Gagal membaca data pemain (' + res.status + ')');
 const rows = await res.json();
 const existing = rows.length > 0 ? rows[0] : null;
@@ -211,7 +211,7 @@ losses: 0,
 donor_rank: isPrincipal ? 10 : 0,
 role: isPrincipal ? 'KEPALA SEKOLAH' : 'SISWA'
 };
-const insRes = await fetch(${SUPABASE_URL}/rest/v1/players, {
+const insRes = await fetch(SUPABASE_URL + '/rest/v1/players', {
 method: 'POST',
 headers: headers,
 body: JSON.stringify(newPlayer)
@@ -257,7 +257,7 @@ badge.innerText = 'PIONIR S0';
 loadChat();
 }
 async function syncPlayer() {
-await fetch(${SUPABASE_URL}/rest/v1/players?username=eq.${encodeURIComponent(currentUser.username)}, {
+await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(currentUser.username), {
 method: 'PATCH',
 headers: headers,
 body: JSON.stringify({
@@ -319,8 +319,8 @@ currentUser.points += (mode === 'KEPSEK' ? 5 : 2);
 } else {
 currentUser.losses += 1;
 }
-logBox.innerHTML = <strong>[${mode === 'KEPSEK' ? 'DUEL KEPSEK SATU BASIS' : 'TAWURAN ESTAFET 3V3'}]</strong><br> Lawan: <strong>${enemySchool}</strong> (OVR ${enemyOvr})<br> Gaya Kamu: <strong>${myStance}</strong> vs Lawan: <strong>${enemyStance}</strong><br> Status: <span style="color:#38bdf8;">${counterText}</span><br> Hasil Akhir: <strong style="color:${isWin ? '#4ade80' : '#f87171'};">${isWin ? 'MENANG! (+Poin Latih)' : 'KALAH! Tingkatkan Stat kamu.'}</strong>;
-await fetch(${SUPABASE_URL}/rest/v1/battles, {
+logBox.innerHTML = '<strong>[' + (mode === 'KEPSEK' ? 'DUEL KEPSEK SATU BASIS' : 'TAWURAN ESTAFET 3V3') + ']</strong><br>Lawan: <strong>' + enemySchool + '</strong> (OVR ' + enemyOvr + ')<br>Gaya Kamu: <strong>' + myStance + '</strong> vs Lawan: <strong>' + enemyStance + '</strong><br>Status: <span style="color:#38bdf8;">' + counterText + '</span><br>Hasil Akhir: <strong style="color:' + (isWin ? '#4ade80' : '#f87171') + ';">' + (isWin ? 'MENANG! (+Poin Latih)' : 'KALAH! Tingkatkan Stat kamu.') + '</strong>';
+await fetch(SUPABASE_URL + '/rest/v1/battles', {
 method: 'POST',
 headers: headers,
 body: JSON.stringify({
@@ -333,14 +333,14 @@ result: isWin ? 'WIN' : 'LOSS'
 await syncPlayer();
 }
 async function loadChat() {
-const res = await fetch(${SUPABASE_URL}/rest/v1/messages?select=*&order=created_at.desc&limit=20, { headers });
+const res = await fetch(SUPABASE_URL + '/rest/v1/messages?select=*&order=created_at.desc&limit=20', { headers });
 const data = await res.json();
 const box = document.getElementById('chatBox');
 if (!data || data.length === 0) {
 box.innerHTML = 'Belum ada pesan. Mulai obrolan pertama!';
 return;
 }
-box.innerHTML = data.reverse().map(m => <div class="chat-msg"> <strong style="color:#f59e0b;">${m.sender}</strong> <span style="font-size:10px; color:#64748b;">[${m.school}]</span>: ${m.content} </div>).join('');
+box.innerHTML = data.reverse().map(function(m) { return '<div class="chat-msg"><strong style="color:#f59e0b;">' + m.sender + '</strong> <span style="font-size:10px; color:#64748b;">[' + m.school + ']</span>: ' + m.content + '</div>'; }).join('');
 box.scrollTop = box.scrollHeight;
 }
 async function sendChat() {
@@ -348,7 +348,7 @@ const input = document.getElementById('chatInput');
 const text = input.value.trim();
 if (!text) return;
 input.value = '';
-await fetch(${SUPABASE_URL}/rest/v1/messages, {
+await fetch(SUPABASE_URL + '/rest/v1/messages', {
 method: 'POST',
 headers: headers,
 body: JSON.stringify({
@@ -362,7 +362,7 @@ loadChat();
 async function redeemCode() {
 const code = document.getElementById('vipCodeInput').value.trim().toUpperCase();
 if (!code) return alert('Masukkan kode voucher dulu!');
-const res = await fetch(${SUPABASE_URL}/rest/v1/vip_codes?code=eq.${encodeURIComponent(code)}&is_used=eq.false&select=*, { headers });
+const res = await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(code) + '&is_used=eq.false&select=*', { headers });
 const rows = await res.json();
 const data = rows.length > 0 ? rows[0] : null;
 if (!data) return alert('Kode tidak valid atau sudah pernah dipakai!');
@@ -374,33 +374,36 @@ currentUser.school = 'SEKOLAH VIP AO';
 currentUser.role = 'GURU';
 alert('SELAMAT! Kamu mencapai DONATUR RANK 10 dan resmi diangkat menjadi GURU PARTNERSHIP di SEKOLAH VIP AO!');
 } else {
-alert(Berhasil klaim Kode Donatur Rank ${newRank}! Poin Latih bertambah.);
+alert('Berhasil klaim Kode Donatur Rank ' + newRank + '! Poin Latih bertambah.');
 }
-await fetch(${SUPABASE_URL}/rest/v1/vip_codes?code=eq.${encodeURIComponent(code)}, {
+await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(code), {
 method: 'PATCH',
-headers: headers,
-body: JSON.stringify({ is_used: true, used_by: currentUser.username })
-});
-await syncPlayer();
-}
-function switchTab(tabId, btn) {
-['tabStat', 'tabArena', 'tabChat', 'tabVip'].forEach(id => document.getElementById(id).classList.add('hidden'));
-document.getElementById(tabId).classList.remove('hidden');
-document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-if (tabId === 'tabChat') loadChat();
-}
-function logout() {
-localStorage.removeItem('tb_user');
-location.reload();
-}
-window.onload = () => {
-const saved = localStorage.getItem('tb_user');
-if (saved) {
-currentUser = JSON.parse(saved);
-renderGame();
-}
-};
+      headers: headers,
+      body: JSON.stringify({ is_used: true, used_by: currentUser.username })
+    });
+    await syncPlayer();
+  }
+
+  function switchTab(tabId, btn) {
+    ['tabStat', 'tabArena', 'tabChat', 'tabVip'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    document.getElementById(tabId).classList.remove('hidden');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (tabId === 'tabChat') loadChat();
+  }
+
+  function logout() {
+    localStorage.removeItem('tb_user');
+    location.reload();
+  }
+
+  window.onload = () => {
+    const saved = localStorage.getItem('tb_user');
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      renderGame();
+    }
+  };
 </script>
 </body>
 </html>
