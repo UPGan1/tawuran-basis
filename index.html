@@ -135,29 +135,36 @@
         <option value="SPEED">Gaya Main: ⚡ Kombo Kilat (Menang lawan Power, Kalah lawan Defense)</option>
         <option value="DEFENSE">Gaya Main: 🛡️ Tembok Baja Counter (Menang lawan Speed, Kalah lawan Power)</option>
       </select>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
-Gunakan kode dengan hati-hati.
-🔥 ESTAFET 3V3
-👑 LAWAN KEPSEK
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+        <button type="button" class="btn-primary" onclick="startBattle('ESTAFET')">🔥 ESTAFET 3V3</button>
+        <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#9333ea,#7e22ce);" onclick="startBattle('KEPSEK')">👑 LAWAN KEPSEK</button>
+      </div>
+      <div id="battleLog" class="log-box">Siap bertarung! Pilih sekolah lawan dan gaya serangan di atas.</div>
+    </div>
 
-Siap bertarung! Pilih sekolah lawan dan gaya serangan di atas.
-💬 Room Chat Global Antar Basis
-Memuat pesan...
+    <div id="tabChat" class="card hidden">
+      <div class="card-title">💬 Room Chat Global Antar Basis</div>
+      <div id="chatBox" class="chat-box">Memuat pesan...</div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Ketik pesan psywar / obrolan..." />
+        <button type="button" class="btn-sm btn-blue" onclick="sendChat()">Kirim</button>
+      </div>
+    </div>
 
+    <div id="tabVip" class="card hidden">
+      <div class="card-title">👑 Sistem Pangkat Donatur (Rank 1 - 10)</div>
+      <p style="font-size:11px; color:#cbd5e1; margin-top:0;">
+        • <strong>Rank 1 - 9:</strong> Bonus Poin Latih & Lencana Donatur.<br>
+        • <strong>Rank 10 (Tertinggi):</strong> Otomatis diangkat menjadi <strong>GURU PARTNERSHIP</strong> resmi di <strong>SEKOLAH VIP AO</strong> bersama Kepala Sekolah!
+      </p>
+      <input type="text" id="vipCodeInput" placeholder="Masukkan Kode Voucher Donatur / VIP" />
+      <button type="button" class="btn-primary" onclick="redeemCode()">🎁 KLAIM KODE DONATUR</button>
+    </div>
+  </div>
+</div>
 
-Kirim
-
-👑 Sistem Pangkat Donatur (Rank 1 - 10)
-
-• Rank 1 - 9: Bonus Poin Latih & Lencana Donatur.
-
-• Rank 10 (Tertinggi): Otomatis diangkat menjadi GURU PARTNERSHIP resmi di SEKOLAH VIP AO bersama Kepala Sekolah!
-
-
-🎁 KLAIM KODE DONATUR
-
-
-const SUPABASE_URL = 'supabase.co';
+<script>
+  const SUPABASE_URL = 'https://rrcqcgfqcftujpmiqozq.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_LtDpKaQW616HLjpTMNfO9w_ZlyzqnUu';
 const headers = {
 'apikey': SUPABASE_KEY,
