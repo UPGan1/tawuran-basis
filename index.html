@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TAWURAN BASIS - Season 0</title>
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://jsdelivr.net"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
     * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -188,7 +188,7 @@ Kirim
 const SUPABASE_URL = 'https://rrcqcgfqcftujpmiqozq.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_L1DPkaQN6l6HLjPTMNfO9w_ZIyzqnUu';
 // =====================================================================
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 let selectedSchool = '';
 let currentUser = null;
 function selectSchool(school, btn) {
@@ -205,7 +205,7 @@ if (pin.length !== 4 || isNaN(pin)) return alert('PIN harus 4 digit angka!');
 const btn = document.getElementById('loginBtn');
 btn.innerText = '⏳ MEMPROSES...';
 btn.disabled = true;
-try {
+if (!db) return alert('Koneksi ke server Supabase terblokir jaringan!');
 // Cek apakah akun sudah ada
 const { data: existing, error: fetchErr } = await db
 .from('players')
