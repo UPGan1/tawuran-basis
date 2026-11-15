@@ -165,9 +165,10 @@
 
 <script>
   const SUPABASE_URL = 'https://kreprwohektzxojakzio.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_MwjKI6MlHnvMsrxO8FaUVw_jtOAjZdD';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXByd29oZWt0enhvamFremlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3MDg5MDQsImV4cCI6MjExMDI4NDkwNH0.h6BhyH4RcRDQAH-qE5tfWB68CsbTv6QjTszQwcIdJF4'
 const headers = {
 'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY,
 'Content-Type': 'application/json',
 'Prefer': 'return=representation'
 };
