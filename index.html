@@ -3,60 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAWURAN BASIS </title>
+  <title>TAWURAN BASIS - Season 0</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
     body { background: #090d16; color: #f8fafc; margin: 0; padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
     .container { max-width: 500px; width: 100%; background: #111827; border-radius: 16px; padding: 16px; border: 1px solid #1f2937; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-    
-    /* TICKER */
     .ticker { background: #1e1b4b; border: 1px solid #4f46e5; padding: 7px 12px; border-radius: 8px; font-size: 12px; color: #c7d2fe; overflow: hidden; white-space: nowrap; margin-bottom: 14px; }
     .ticker span { display: inline-block; padding-left: 100%; animation: marquee 18s linear infinite; font-weight: 600; }
     @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-
-    /* HEADER */
     .header { text-align: center; margin-bottom: 16px; }
     .header h1 { margin: 0; font-size: 24px; font-weight: 900; color: #f59e0b; letter-spacing: 0.5px; }
     .header p { margin: 4px 0 0; font-size: 12px; color: #94a3b8; }
-
-    /* FORM & BUTTONS */
     .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 14px; }
     .card-title { font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
     input, select { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 13px; margin-bottom: 10px; outline: none; }
     input:focus { border-color: #f59e0b; }
-    
     .school-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .school-btn { background: #0f172a; border: 1px solid #334155; color: #cbd5e1; padding: 10px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s; }
-    .school-btn.active { background: #f59e0b; color: #090d16; border-color: #fbbf24; }
+    .school-btn { background: #0f172a; border: 1px solid #334155; color: #cbd5e1; padding: 10px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; }
+    .school-btn.active { background: #f59e0b !important; color: #090d16 !important; border-color: #fbbf24 !important; }
     .school-btn.vip { border-color: #a855f7; color: #e9d5ff; }
-    .school-btn.vip.active { background: #9333ea; color: #fff; border-color: #c084fc; }
-
+    .school-btn.vip.active { background: #9333ea !important; color: #fff !important; border-color: #c084fc !important; }
     .btn-primary { width: 100%; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
-    .btn-primary:hover { opacity: 0.95; }
     .btn-sm { padding: 7px 10px; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
     .btn-blue { background: #2563eb; color: #fff; }
-    .btn-red { background: #dc2626; color: #fff; }
-    .btn-green { background: #16a34a; color: #fff; }
-
-    /* NAV TABS */
     .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
     .tab-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 9px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
     .tab-btn.active { background: #38bdf8; color: #090d16; border-color: #7dd3fc; }
-
-    /* STAT BAR */
     .stat-row { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 10px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; }
     .badge { padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 800; }
     .badge-kepsek { background: #f59e0b; color: #000; }
     .badge-guru { background: #a855f7; color: #fff; }
     .badge-rank { background: #334155; color: #38bdf8; }
-
-    /* CHAT */
     .chat-box { height: 220px; overflow-y: auto; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px; margin-bottom: 8px; font-size: 12px; }
     .chat-msg { margin-bottom: 8px; line-height: 1.4; border-bottom: 1px solid #1e293b; padding-bottom: 5px; }
     .chat-input-row { display: flex; gap: 6px; }
     .chat-input-row input { margin-bottom: 0; }
-
     .hidden { display: none !important; }
     .log-box { background: #090d16; border: 1px solid #334155; border-radius: 8px; padding: 10px; font-size: 12px; line-height: 1.5; max-height: 180px; overflow-y: auto; color: #e2e8f0; }
   </style>
@@ -73,7 +54,6 @@
     <p>Season 0 • Estafet 3 vs 3 Tangan Kosong</p>
   </div>
 
-  <!-- HALAMAN LOGIN / DAFTAR -->
   <div id="authSection" class="card">
     <div class="card-title">🔐 Masuk / Daftar Pionir S0</div>
     <input type="text" id="usernameInput" placeholder="Ketik @username_ig kamu (cth: @rdo.iny_)" />
@@ -90,15 +70,13 @@
       <button type="button" class="school-btn vip" style="grid-column: span 2;" onclick="selectSchool('SEKOLAH VIP AO', this)">👑 SEKOLAH VIP AO (Basis Khusus)</button>
     </div>
 
-    <button class="btn-primary" id="loginBtn" onclick="handleAuth()">🚀 MASUK KE ARENA</button>
+    <button type="button" class="btn-primary" id="loginBtn" onclick="handleAuth()">🚀 MASUK KE ARENA</button>
     <p style="font-size: 11px; color: #64748b; text-align: center; margin: 10px 0 0;">
       Akun otomatis tersimpan online. Lupa PIN? DM IG resmi game.
     </p>
   </div>
 
-  <!-- HALAMAN UTAMA GAME -->
   <div id="gameSection" class="hidden">
-    <!-- PROFIL RINGKAS -->
     <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
         <div>
@@ -115,37 +93,34 @@
         <span>Menang: <strong id="dispWin" style="color:#4ade80;">0</strong></span>
         <span>Kalah: <strong id="dispLoss" style="color:#f87171;">0</strong></span>
         <span>Donasi Rank: <strong id="dispRank" style="color:#c084fc;">Rank 0</strong></span>
-        <button onclick="logout()" style="background:none; border:none; color:#f87171; font-size:11px; cursor:pointer; font-weight:700;">Keluar</button>
+        <button type="button" onclick="logout()" style="background:none; border:none; color:#f87171; font-size:11px; cursor:pointer; font-weight:700;">Keluar</button>
       </div>
     </div>
 
-    <!-- MENU NAVIGASI -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('tabStat', this)">💪 LATIHAN</button>
-      <button class="tab-btn" onclick="switchTab('tabArena', this)">⚔️ ARENA 3V3</button>
-      <button class="tab-btn" onclick="switchTab('tabChat', this)">💬 CHAT GLOBAL</button>
-      <button class="tab-btn" onclick="switchTab('tabVip', this)">👑 DONATUR</button>
+      <button type="button" class="tab-btn active" onclick="switchTab('tabStat', this)">💪 LATIHAN</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tabArena', this)">⚔️ ARENA 3V3</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tabChat', this)">💬 CHAT GLOBAL</button>
+      <button type="button" class="tab-btn" onclick="switchTab('tabVip', this)">👑 DONATUR</button>
     </div>
 
-    <!-- TAB 1: STAT & LATIHAN -->
     <div id="tabStat" class="card">
       <div class="card-title">📊 Atribut Tempur (Gunakan Poin Latih)</div>
       <div class="stat-row">
         <span>🥊 Power (Serangan Berat)</span>
-        <div><strong id="statPow" style="margin-right:8px;">50</strong><button class="btn-sm btn-blue" onclick="upgradeStat('power')">+1</button></div>
+        <div><strong id="statPow" style="margin-right:8px;">50</strong><button type="button" class="btn-sm btn-blue" onclick="upgradeStat('power')">+1</button></div>
       </div>
       <div class="stat-row">
         <span>⚡ Speed (Serangan Cepat)</span>
-        <div><strong id="statSpd" style="margin-right:8px;">50</strong><button class="btn-sm btn-blue" onclick="upgradeStat('speed')">+1</button></div>
+        <div><strong id="statSpd" style="margin-right:8px;">50</strong><button type="button" class="btn-sm btn-blue" onclick="upgradeStat('speed')">+1</button></div>
       </div>
       <div class="stat-row">
         <span>🛡️ Defense (Tembok Baja / Tahan)</span>
-        <div><strong id="statDef" style="margin-right:8px;">50</strong><button class="btn-sm btn-blue" onclick="upgradeStat('defense')">+1</button></div>
+        <div><strong id="statDef" style="margin-right:8px;">50</strong><button type="button" class="btn-sm btn-blue" onclick="upgradeStat('defense')">+1</button></div>
       </div>
-      <button class="btn-primary" style="margin-top:8px; background:linear-gradient(135deg,#10b981,#059669);" onclick="dailyTrain()">🏋️ LATIHAN HARIAN (+2 POIN)</button>
+      <button type="button" class="btn-primary" style="margin-top:8px; background:linear-gradient(135deg,#10b981,#059669);" onclick="dailyTrain()">🏋️ LATIHAN HARIAN (+2 POIN)</button>
     </div>
 
-    <!-- TAB 2: ARENA TAWURAN 3V3 & KEPSEK -->
     <div id="tabArena" class="card hidden">
       <div class="card-title">⚔️ Pilih Mode Pertarungan</div>
       <select id="enemySchoolSelect">
@@ -155,12 +130,13 @@
         <option value="SMK KAPAL 69">Serang Basis: SMK KAPAL 69</option>
         <option value="SEKOLAH VIP AO">Serang Basis: SEKOLAH VIP AO</option>
       </select>
+      <select id="stanceSelect">
+        <option value="POWER">Gaya Main: 🥊 Hantaman Brutal (Menang lawan Defense, Kalah lawan Speed)</option>
+        <option value="SPEED">Gaya Main: ⚡ Kombo Kilat (Menang lawan Power, Kalah lawan Defense)</option>
+        <option value="DEFENSE">Gaya Main: 🛡️ Tembok Baja Counter (Menang lawan Speed, Kalah lawan Power)</option>
+      </select>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
 Gunakan kode dengan hati-hati.
-Gaya Main: 🥊 Hantaman Brutal (Menang lawan Defense, Kalah lawan Speed)
-Gaya Main: ⚡ Kombo Kilat (Menang lawan Power, Kalah lawan Defense)
-Gaya Main: 🛡️ Tembok Baja Counter (Menang lawan Speed, Kalah lawan Power)
-
-
 🔥 ESTAFET 3V3
 👑 LAWAN KEPSEK
 
@@ -173,13 +149,92 @@ Kirim
 
 👑 Sistem Pangkat Donatur (Rank 1 - 10)
 
-* Rank 1 - 9: Bonus Poin Latih & Lencana Donatur.
+• Rank 1 - 9: Bonus Poin Latih & Lencana Donatur.
 
-* Rank 10 (Tertinggi): Otomatis diangkat menjadi GURU PARTNERSHIP resmi di SEKOLAH VIP AO bersama Kepala Sekolah!
+• Rank 10 (Tertinggi): Otomatis diangkat menjadi GURU PARTNERSHIP resmi di SEKOLAH VIP AO bersama Kepala Sekolah!
 
 
 🎁 KLAIM KODE DONATUR
 
+
+const SUPABASE_URL = 'supabase.co';
+const SUPABASE_KEY = 'sb_publishable_LtDpKaQW616HLjpTMNfO9w_ZlyzqnUu';
+const headers = {
+'apikey': SUPABASE_KEY,
+'Authorization': 'Bearer ' + SUPABASE_KEY,
+'Content-Type': 'application/json',
+'Prefer': 'return=representation'
+};
+let selectedSchool = '';
+let currentUser = null;
+function selectSchool(school, btn) {
+selectedSchool = school;
+document.querySelectorAll('.school-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+}
+async function handleAuth() {
+let username = document.getElementById('usernameInput').value.trim().toLowerCase();
+const pin = document.getElementById('pinInput').value.trim();
+if (!username) return alert('Isi @username_ig kamu dulu!');
+if (!username.startsWith('@')) username = '@' + username;
+if (pin.length !== 4 || isNaN(pin)) return alert('PIN harus 4 digit angka!');
+const btn = document.getElementById('loginBtn');
+btn.innerText = '⏳ MEMPROSES...';
+btn.disabled = true;
+try {
+const res = await fetch(${SUPABASE_URL}/rest/v1/players?username=eq.${encodeURIComponent(username)}&select=*, { headers });
+if (!res.ok) throw new Error('Gagal membaca data pemain (' + res.status + ')');
+const rows = await res.json();
+const existing = rows.length > 0 ? rows[0] : null;
+if (existing) {
+if (existing.pin !== pin) {
+alert('PIN salah! Coba masukkan 4 digit PIN yang benar.');
+return;
+}
+currentUser = existing;
+} else {
+if (!selectedSchool) {
+alert('Akun baru wajib memilih Asal Sekolah terlebih dahulu!');
+return;
+}
+const isPrincipal = (username === '@rdo.iny_' || username === '@rdo.iny');
+const newPlayer = {
+username: username,
+pin: pin,
+school: isPrincipal ? 'SEKOLAH VIP AO' : selectedSchool,
+power: isPrincipal ? 99 : 50,
+speed: isPrincipal ? 99 : 50,
+defense: isPrincipal ? 99 : 50,
+points: isPrincipal ? 50 : 5,
+wins: 0,
+losses: 0,
+donor_rank: isPrincipal ? 10 : 0,
+role: isPrincipal ? 'KEPALA SEKOLAH' : 'SISWA'
+};
+const insRes = await fetch(${SUPABASE_URL}/rest/v1/players, {
+method: 'POST',
+headers: headers,
+body: JSON.stringify(newPlayer)
+});
+if (!insRes.ok) throw new Error('Gagal mendaftarkan akun (' + insRes.status + ')');
+const inserted = await insRes.json();
+currentUser = inserted[0];
+}
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+renderGame();
+} catch (err) {
+alert('Error koneksi: ' + err.message);
+} finally {
+btn.innerText = '🚀 MASUK KE ARENA';
+btn.disabled = false;
+}
+}
+function renderGame() {
+document.getElementById('authSection').classList.add('hidden');
+document.getElementById('gameSection').classList.remove('hidden');
+const ovr = Math.round((currentUser.power + currentUser.speed + currentUser.defense) / 3);
+document.getElementById('dispUser').innerText = currentUser.username;
+document.getElementById('dispSchool').innerText = currentUser.school;
 document.getElementById('dispOvr').innerText = ovr;
 document.getElementById('dispPts').innerText = currentUser.points;
 document.getElementById('dispWin').innerText = currentUser.wins;
@@ -202,7 +257,10 @@ badge.innerText = 'PIONIR S0';
 loadChat();
 }
 async function syncPlayer() {
-await db.from('players').update({
+await fetch(${SUPABASE_URL}/rest/v1/players?username=eq.${encodeURIComponent(currentUser.username)}, {
+method: 'PATCH',
+headers: headers,
+body: JSON.stringify({
 power: currentUser.power,
 speed: currentUser.speed,
 defense: currentUser.defense,
@@ -212,7 +270,8 @@ losses: currentUser.losses,
 donor_rank: currentUser.donor_rank,
 role: currentUser.role,
 school: currentUser.school
-}).eq('username', currentUser.username);
+})
+});
 localStorage.setItem('tb_user', JSON.stringify(currentUser));
 renderGame();
 }
@@ -261,16 +320,21 @@ currentUser.points += (mode === 'KEPSEK' ? 5 : 2);
 currentUser.losses += 1;
 }
 logBox.innerHTML = <strong>[${mode === 'KEPSEK' ? 'DUEL KEPSEK SATU BASIS' : 'TAWURAN ESTAFET 3V3'}]</strong><br> Lawan: <strong>${enemySchool}</strong> (OVR ${enemyOvr})<br> Gaya Kamu: <strong>${myStance}</strong> vs Lawan: <strong>${enemyStance}</strong><br> Status: <span style="color:#38bdf8;">${counterText}</span><br> Hasil Akhir: <strong style="color:${isWin ? '#4ade80' : '#f87171'};">${isWin ? 'MENANG! (+Poin Latih)' : 'KALAH! Tingkatkan Stat kamu.'}</strong>;
-await db.from('battles').insert([{
+await fetch(${SUPABASE_URL}/rest/v1/battles, {
+method: 'POST',
+headers: headers,
+body: JSON.stringify({
 attacker: currentUser.username,
 target_school: enemySchool,
 mode: mode,
 result: isWin ? 'WIN' : 'LOSS'
-}]);
+})
+});
 await syncPlayer();
 }
 async function loadChat() {
-const { data } = await db.from('messages').select('*').order('created_at', { ascending: false }).limit(20);
+const res = await fetch(${SUPABASE_URL}/rest/v1/messages?select=*&order=created_at.desc&limit=20, { headers });
+const data = await res.json();
 const box = document.getElementById('chatBox');
 if (!data || data.length === 0) {
 box.innerHTML = 'Belum ada pesan. Mulai obrolan pertama!';
@@ -284,18 +348,24 @@ const input = document.getElementById('chatInput');
 const text = input.value.trim();
 if (!text) return;
 input.value = '';
-await db.from('messages').insert([{
+await fetch(${SUPABASE_URL}/rest/v1/messages, {
+method: 'POST',
+headers: headers,
+body: JSON.stringify({
 sender: currentUser.username,
 school: currentUser.school,
 content: text
-}]);
+})
+});
 loadChat();
 }
 async function redeemCode() {
 const code = document.getElementById('vipCodeInput').value.trim().toUpperCase();
 if (!code) return alert('Masukkan kode voucher dulu!');
-const { data, error } = await db.from('vip_codes').select('*').eq('code', code).eq('is_used', false).maybeSingle();
-if (error || !data) return alert('Kode tidak valid atau sudah pernah dipakai!');
+const res = await fetch(${SUPABASE_URL}/rest/v1/vip_codes?code=eq.${encodeURIComponent(code)}&is_used=eq.false&select=*, { headers });
+const rows = await res.json();
+const data = rows.length > 0 ? rows[0] : null;
+if (!data) return alert('Kode tidak valid atau sudah pernah dipakai!');
 const newRank = Math.min(10, data.rank_level || 1);
 currentUser.donor_rank = Math.max(currentUser.donor_rank, newRank);
 currentUser.points += (newRank * 3);
@@ -306,7 +376,11 @@ alert('SELAMAT! Kamu mencapai DONATUR RANK 10 dan resmi diangkat menjadi GURU PA
 } else {
 alert(Berhasil klaim Kode Donatur Rank ${newRank}! Poin Latih bertambah.);
 }
-await db.from('vip_codes').update({ is_used: true, used_by: currentUser.username }).eq('code', code);
+await fetch(${SUPABASE_URL}/rest/v1/vip_codes?code=eq.${encodeURIComponent(code)}, {
+method: 'PATCH',
+headers: headers,
+body: JSON.stringify({ is_used: true, used_by: currentUser.username })
+});
 await syncPlayer();
 }
 function switchTab(tabId, btn) {
@@ -330,87 +404,3 @@ renderGame();
 </script>
 </body>
 </html>
-// =====================================================================
-// WAJIB GANTI 2 BARIS DI BAWAH INI DENGAN DATA PROYEK SUPABASE KAMU!
-// =====================================================================
-const SUPABASE_URL = 'https://rrcqcgfqcftujpmiqozq.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_L1DPkaQN6l6HLjPTMNfO9w_ZIyzqnUu';
-// =====================================================================
-const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-let selectedSchool = '';
-let currentUser = null;
-function selectSchool(school, btn) {
-selectedSchool = school;
-document.querySelectorAll('.school-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-}
-async function handleAuth() {
-let username = document.getElementById('usernameInput').value.trim().toLowerCase();
-const pin = document.getElementById('pinInput').value.trim();
-if (!username) return alert('Isi @username_ig kamu dulu!');
-if (!username.startsWith('@')) username = '@' + username;
-if (pin.length !== 4 || isNaN(pin)) return alert('PIN harus 4 digit angka!');
-const btn = document.getElementById('loginBtn');
-btn.innerText = '⏳ MEMPROSES...';
-btn.disabled = true;
-if (!db) return alert('Koneksi ke server Supabase terblokir jaringan!');
-// Cek apakah akun sudah ada
-const { data: existing, error: fetchErr } = await db
-.from('players')
-.select('*')
-.eq('username', username)
-.maybeSingle();
-if (fetchErr) throw fetchErr;
-if (existing) {
-if (existing.pin !== pin) {
-alert('PIN salah! Coba masukkan 4 digit PIN yang benar.');
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
-return;
-}
-currentUser = existing;
-} else {
-if (!selectedSchool) {
-alert('Akun baru wajib memilih Asal Sekolah terlebih dahulu!');
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
-return;
-}
-const isPrincipal = (username === '@rdo.iny_' || username === '@rdo.iny');
-const newPlayer = {
-username: username,
-pin: pin,
-school: isPrincipal ? 'SEKOLAH VIP AO' : selectedSchool,
-power: isPrincipal ? 99 : 50,
-speed: isPrincipal ? 99 : 50,
-defense: isPrincipal ? 99 : 50,
-points: isPrincipal ? 50 : 5,
-wins: 0,
-losses: 0,
-donor_rank: isPrincipal ? 10 : 0,
-role: isPrincipal ? 'KEPALA SEKOLAH' : 'SISWA'
-};
-const { data: inserted, error: insErr } = await db
-.from('players')
-.insert([newPlayer])
-.select()
-.single();
-if (insErr) throw insErr;
-currentUser = inserted;
-}
-localStorage.setItem('tb_user', JSON.stringify(currentUser));
-renderGame();
-} catch (err) {
-alert('Gagal terhubung ke database: ' + err.message);
-} finally {
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
-}
-}
-function renderGame() {
-document.getElementById('authSection').classList.add('hidden');
-document.getElementById('gameSection').classList.remove('hidden');
-const ovr = Math.round((currentUser.power + currentUser.speed + currentUser.defense) / 3);
-document.getElementById('dispUser').innerText = currentUser.username;
-document.getElementById('dispSchool').innerText = currentUser.school;
-
