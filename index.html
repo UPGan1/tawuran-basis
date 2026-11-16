@@ -1,416 +1,429 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAWURAN BASIS - Season 0</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAWURAN BASIS • Royal Edition</title>
+  <link href="https://googleapis.com" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: #090d16; color: #f8fafc; margin: 0; padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
-    .container { max-width: 500px; width: 100%; background: #111827; border-radius: 16px; padding: 16px; border: 1px solid #1f2937; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-    .ticker { background: #1e1b4b; border: 1px solid #4f46e5; padding: 7px 12px; border-radius: 8px; font-size: 12px; color: #c7d2fe; overflow: hidden; white-space: nowrap; margin-bottom: 14px; }
-    .ticker span { display: inline-block; padding-left: 100%; animation: marquee 18s linear infinite; font-weight: 600; }
-    @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-    .header { text-align: center; margin-bottom: 16px; }
-    .header h1 { margin: 0; font-size: 24px; font-weight: 900; color: #f59e0b; letter-spacing: 0.5px; }
-    .header p { margin: 4px 0 0; font-size: 12px; color: #94a3b8; }
-    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 14px; }
-    .card-title { font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-    input, select { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #fff; font-size: 13px; margin-bottom: 10px; outline: none; }
-    input:focus { border-color: #f59e0b; }
-    .school-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .school-btn { background: #0f172a; border: 1px solid #334155; color: #cbd5e1; padding: 10px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; }
-    .school-btn.active { background: #f59e0b !important; color: #090d16 !important; border-color: #fbbf24 !important; }
-    .school-btn.vip { border-color: #a855f7; color: #e9d5ff; }
-    .school-btn.vip.active { background: #9333ea !important; color: #fff !important; border-color: #c084fc !important; }
-    .btn-primary { width: 100%; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
-    .btn-sm { padding: 7px 10px; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .btn-blue { background: #2563eb; color: #fff; }
-    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
-    .tab-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 9px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
-    .tab-btn.active { background: #38bdf8; color: #090d16; border-color: #7dd3fc; }
-    .stat-row { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 10px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; }
-    .badge { padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 800; }
-    .badge-kepsek { background: #f59e0b; color: #000; }
-    .badge-guru { background: #a855f7; color: #fff; }
-    .badge-rank { background: #334155; color: #38bdf8; }
-    .chat-box { height: 220px; overflow-y: auto; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px; margin-bottom: 8px; font-size: 12px; }
-    .chat-msg { margin-bottom: 8px; line-height: 1.4; border-bottom: 1px solid #1e293b; padding-bottom: 5px; }
-    .chat-input-row { display: flex; gap: 6px; }
-    .chat-input-row input { margin-bottom: 0; }
-    .hidden { display: none !important; }
-    .log-box { background: #090d16; border: 1px solid #334155; border-radius: 8px; padding: 10px; font-size: 12px; line-height: 1.5; max-height: 180px; overflow-y: auto; color: #e2e8f0; }
+    :root {
+      --bg-obsidian: #070709;
+      --card-glass: rgba(18, 18, 24, 0.85);
+      --gold-light: #fde08d;
+      --gold-main: #d4af37;
+      --gold-dark: #8a6d1c;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --emerald: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-obsidian);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(212, 175, 55, 0.08) 0%, transparent 40%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    /* Running Text Pengumuman VIP */
+    .marquee-bar {
+      background: linear-gradient(90deg, #1a1506, #3d2e0a, #1a1506);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 8px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.5px;
+    }
+
+    .marquee-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 18s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Header Judul Megah */
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .title-royal {
+      font-family: 'Cinzel', serif;
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #fff3c4 0%, #d4af37 55%, #8a6d1c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.35));
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Kartu Profil Sultan */
+    .profile-card {
+      background: var(--card-glass);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(212, 175, 55, 0.05);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+    }
+
+    .profile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .username-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .username {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Lencana Animasi Shimmer */
+    .badge-kepsek {
+      background: linear-gradient(135deg, #fde08d 0%, #d4af37 50%, #997618 100%);
+      color: #09090b;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge-kepsek::after {
+      content: "";
+      position: absolute;
+      top: -50%; left: -60%;
+      width: 40%; height: 200%;
+      background: rgba(255, 255, 255, 0.6);
+      transform: rotate(25deg);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -60%; }
+      40%, 100% { left: 130%; }
+    }
+
+    .school-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-main);
+      margin-top: 4px;
+      letter-spacing: 0.8px;
+    }
+
+    .ovr-box {
+      text-align: right;
+    }
+
+    .ovr-value {
+      font-family: 'Cinzel', serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .poin-latih {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+    }
+
+    .rank-highlight {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Navigasi Tab Mewah */
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      background: rgba(24, 24, 32, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      padding: 10px 4px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.25) 0%, rgba(138, 109, 28, 0.15) 100%);
+      border-color: var(--gold-main);
+      color: var(--gold-light);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Kotak Konten Utama */
+    .panel-box {
+      background: var(--card-glass);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold-light);
+      letter-spacing: 0.8px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Baris Atribut Tempur */
+    .stat-row {
+      background: rgba(10, 10, 14, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .stat-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .stat-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat-num {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    .btn-plus {
+      background: linear-gradient(135deg, #fde08d 0%, #d4af37 100%);
+      color: #09090b;
+      border: none;
+      width: 30px;
+      height: 28px;
+      border-radius: 7px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+    }
+
+    .btn-plus:active {
+      transform: scale(0.94);
+    }
+
+    /* Tombol Latihan Utama */
+    .btn-train-daily {
+      width: 100%;
+      margin-top: 8px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fde08d 0%, #d4af37 50%, #a67c1e 100%);
+      color: #070709;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+      transition: transform 0.15s ease;
+    }
+
+    .btn-train-daily:active {
+      transform: scale(0.98);
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="ticker">
-    <span>🔥 RESMI DIBUKA! Kejar Tahta Top 1 (OVR 99) & Klaim Lencana Permanen S0 sekarang! • Sistem Estafet 3v3 • 5 Basis Sekolah • Rank 10 Donatur = Status Guru VIP Sekolah AO!</span>
-  </div>
-
-  <div class="header">
-    <h1>👊 TAWURAN BASIS</h1>
-    <p>Season 0 • Estafet 3 vs 3 Tangan Kosong</p>
-  </div>
-
-  <div id="authSection" class="card">
-    <div class="card-title">🔐 Masuk / Daftar Pionir S0</div>
-    <input type="text" id="usernameInput" placeholder="Ketik @username_ig kamu (cth: @rdo.iny_)" />
-    <input type="password" id="pinInput" maxlength="4" placeholder="Buat / Masukkan 4 Digit PIN Rahasia" />
-    
-    <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">
-      Pilih Asal Sekolah (Terkunci 1 Season Penuh):
+  <!-- Running Text Pengumuman -->
+  <div class="marquee-bar">
+    <div class="marquee-content">
+      👑 ROYAL SEASON 0 • SISTEM ESTAFET 3V3 • 5 BASIS SEKOLAH • DONATUR RANK 10 = STATUS GURU VIP • KUASAI ARENA SEKARANG!
     </div>
-    <div class="school-grid" id="schoolGrid">
-      <button type="button" class="school-btn" onclick="selectSchool('STM BOEDOET 145', this)">STM BOEDOET 145</button>
-      <button type="button" class="school-btn" onclick="selectSchool('STM KAMPUNG JAWA', this)">STM KAMPUNG JAWA</button>
-      <button type="button" class="school-btn" onclick="selectSchool('STM PENERBANGAN', this)">STM PENERBANGAN</button>
-      <button type="button" class="school-btn" onclick="selectSchool('SMK KAPAL 69', this)">SMK KAPAL 69</button>
-      <button type="button" class="school-btn vip" style="grid-column: span 2;" onclick="selectSchool('SEKOLAH VIP AO', this)">👑 SEKOLAH VIP AO (Basis Khusus)</button>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title-royal">TAWURAN BASIS</h1>
+      <p class="subtitle">Season 0 • Estafet 3 vs 3 Tangan Kosong</p>
     </div>
 
-    <button type="button" class="btn-primary" id="loginBtn" onclick="handleAuth()">🚀 MASUK KE ARENA</button>
-    <p style="font-size: 11px; color: #64748b; text-align: center; margin: 10px 0 0;">
-      Akun otomatis tersimpan online. Lupa PIN? DM IG resmi game.
-    </p>
-  </div>
-
-  <div id="gameSection" class="hidden">
-    <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+    <!-- Kartu Profil -->
+    <div class="profile-card">
+      <div class="profile-top">
         <div>
-          <strong id="dispUser" style="font-size:15px; color:#f8fafc;">@user</strong>
-          <span id="dispRoleBadge" class="badge badge-rank">PIONIR</span>
-          <div id="dispSchool" style="font-size:11px; color:#f59e0b; font-weight:700; margin-top:2px;">SEKOLAH</div>
+          <div class="username-row">
+            <span class="username" id="ui-username">@rdo.iny_</span>
+            <span class="badge-kepsek">👑 KEPALA SEKOLAH AO</span>
+          </div>
+          <div class="school-name" id="ui-school">SEKOLAH VIP AO</div>
         </div>
-        <div style="text-align:right;">
-          <div style="font-size:18px; font-weight:900; color:#38bdf8;">OVR <span id="dispOvr">60</span></div>
-          <div style="font-size:11px; color:#94a3b8;">Poin Latih: <strong id="dispPts" style="color:#4ade80;">5</strong></div>
+        <div class="ovr-box">
+          <div class="ovr-value">OVR <span id="ui-ovr">99</span></div>
+          <div class="poin-latih">Poin Latih: <strong style="color:#fde08d" id="ui-poin">50</strong></div>
         </div>
       </div>
-      <div style="display:flex; justify-content:space-between; font-size:11px; color:#cbd5e1; background:#0f172a; padding:6px 10px; border-radius:6px;">
-        <span>Menang: <strong id="dispWin" style="color:#4ade80;">0</strong></span>
-        <span>Kalah: <strong id="dispLoss" style="color:#f87171;">0</strong></span>
-        <span>Donasi Rank: <strong id="dispRank" style="color:#c084fc;">Rank 0</strong></span>
-        <button type="button" onclick="logout()" style="background:none; border:none; color:#f87171; font-size:11px; cursor:pointer; font-weight:700;">Keluar</button>
+
+      <div class="profile-stats">
+        <span>Menang: <strong id="ui-win">0</strong></span>
+        <span>Kalah: <strong id="ui-lose">0</strong></span>
+        <span>Donasi: <span class="rank-highlight">Rank 10</span></span>
+        <button class="btn-logout" onclick="logout()">Keluar</button>
       </div>
     </div>
 
-    <div class="tabs">
-      <button type="button" class="tab-btn active" onclick="switchTab('tabStat', this)">💪 LATIHAN</button>
-      <button type="button" class="tab-btn" onclick="switchTab('tabArena', this)">⚔️ ARENA 3V3</button>
-      <button type="button" class="tab-btn" onclick="switchTab('tabChat', this)">💬 CHAT GLOBAL</button>
-      <button type="button" class="tab-btn" onclick="switchTab('tabVip', this)">👑 DONATUR</button>
+    <!-- Menu Navigasi -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('latihan', this)">💪 LATIHAN</button>
+      <button class="tab-btn" onclick="switchTab('arena', this)">⚔️ ARENA 3V3</button>
+      <button class="tab-btn" onclick="switchTab('chat', this)">💬 GLOBAL</button>
+      <button class="tab-btn" onclick="switchTab('donatur', this)">👑 DONATUR</button>
     </div>
 
-    <div id="tabStat" class="card">
-      <div class="card-title">📊 Atribut Tempur (Gunakan Poin Latih)</div>
+    <!-- Panel Latihan -->
+    <div id="tab-latihan" class="panel-box">
+      <div class="panel-title">🏛️ ATRIBUT TEMPUR (GUNAKAN POIN LATIH)</div>
+
       <div class="stat-row">
-        <span>🥊 Power (Serangan Berat)</span>
-        <div><strong id="statPow" style="margin-right:8px;">50</strong><button type="button" class="btn-sm btn-blue" onclick="upgradeStat('power')">+1</button></div>
-      </div>
-      <div class="stat-row">
-        <span>⚡ Speed (Serangan Cepat)</span>
-        <div><strong id="statSpd" style="margin-right:8px;">50</strong><button type="button" class="btn-sm btn-blue" onclick="upgradeStat('speed')">+1</button></div>
-      </div>
-      <div class="stat-row">
-        <span>🛡️ Defense (Tembok Baja / Tahan)</span>
-        <div><strong id="statDef" style="margin-right:8px;">50</strong><button type="button" class="btn-sm btn-blue" onclick="upgradeStat('defense')">+1</button></div>
-      </div>
-      <button type="button" class="btn-primary" style="margin-top:8px; background:linear-gradient(135deg,#10b981,#059669);" onclick="dailyTrain()">🏋️ LATIHAN HARIAN (+2 POIN)</button>
-    </div>
+        <span class="stat-name">🥊 Power (Serangan Berat)</span>
+        <div class="stat-controls">
+          <span class="stat-num" id="stat-power">99</span>
+          ⚡ Speed (Serangan Cepat)
 
-    <div id="tabArena" class="card hidden">
-      <div class="card-title">⚔️ Pilih Mode Pertarungan</div>
-      <select id="enemySchoolSelect">
-        <option value="STM BOEDOET 145">Serang Basis: STM BOEDOET 145</option>
-        <option value="STM KAMPUNG JAWA">Serang Basis: STM KAMPUNG JAWA</option>
-        <option value="STM PENERBANGAN">Serang Basis: STM PENERBANGAN</option>
-        <option value="SMK KAPAL 69">Serang Basis: SMK KAPAL 69</option>
-        <option value="SEKOLAH VIP AO">Serang Basis: SEKOLAH VIP AO</option>
-      </select>
-      <select id="stanceSelect">
-        <option value="POWER">Gaya Main: 🥊 Hantaman Brutal (Menang lawan Defense, Kalah lawan Speed)</option>
-        <option value="SPEED">Gaya Main: ⚡ Kombo Kilat (Menang lawan Power, Kalah lawan Defense)</option>
-        <option value="DEFENSE">Gaya Main: 🛡️ Tembok Baja Counter (Menang lawan Speed, Kalah lawan Power)</option>
-      </select>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
-        <button type="button" class="btn-primary" onclick="startBattle('ESTAFET')">🔥 ESTAFET 3V3</button>
-        <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#9333ea,#7e22ce);" onclick="startBattle('KEPSEK')">👑 LAWAN KEPSEK</button>
-      </div>
-      <div id="battleLog" class="log-box">Siap bertarung! Pilih sekolah lawan dan gaya serangan di atas.</div>
-    </div>
+99
++1
 
-    <div id="tabChat" class="card hidden">
-      <div class="card-title">💬 Room Chat Global Antar Basis</div>
-      <div id="chatBox" class="chat-box">Memuat pesan...</div>
-      <div class="chat-input-row">
-        <input type="text" id="chatInput" placeholder="Ketik pesan psywar / obrolan..." />
-        <button type="button" class="btn-sm btn-blue" onclick="sendChat()">Kirim</button>
-      </div>
-    </div>
+🛡️ Defense (Tembok Baja)
 
-    <div id="tabVip" class="card hidden">
-      <div class="card-title">👑 Sistem Pangkat Donatur (Rank 1 - 10)</div>
-      <p style="font-size:11px; color:#cbd5e1; margin-top:0;">
-        • <strong>Rank 1 - 9:</strong> Bonus Poin Latih & Lencana Donatur.<br>
-        • <strong>Rank 10 (Tertinggi):</strong> Otomatis diangkat menjadi <strong>GURU PARTNERSHIP</strong> resmi di <strong>SEKOLAH VIP AO</strong> bersama Kepala Sekolah!
-      </p>
-      <input type="text" id="vipCodeInput" placeholder="Masukkan Kode Voucher Donatur / VIP" />
-      <button type="button" class="btn-primary" onclick="redeemCode()">🎁 KLAIM KODE DONATUR</button>
-    </div>
-  </div>
-</div>
+99
++1
 
-<script>
-  const SUPABASE_URL = 'https://kreprwohektzxojakzio.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXByd29oZWt0enhvamFremlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3MDg5MDQsImV4cCI6MjExMDI4NDkwNH0.h6BhyH4RcRDQAH-qE5tfWB68CsbTv6QjTszQwcIdJF4'
-const headers = {
-'apikey': SUPABASE_KEY,
-  'Authorization': 'Bearer ' + SUPABASE_KEY,
-'Content-Type': 'application/json',
-'Prefer': 'return=representation'
-};
-let selectedSchool = '';
-let currentUser = null;
-function selectSchool(school, btn) {
-selectedSchool = school;
-document.querySelectorAll('.school-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-}
-async function handleAuth() {
-let username = document.getElementById('usernameInput').value.trim().toLowerCase();
-const pin = document.getElementById('pinInput').value.trim();
-if (!username) return alert('Isi @username_ig kamu dulu!');
-if (!username.startsWith('@')) username = '@' + username;
-if (pin.length !== 4 || isNaN(pin)) return alert('PIN harus 4 digit angka!');
-const btn = document.getElementById('loginBtn');
-btn.innerText = '⏳ MEMPROSES...';
-btn.disabled = true;
-try {
-const res = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(username) + '&select=*', { headers });
-if (!res.ok) throw new Error('Gagal membaca data pemain (' + res.status + ')');
-const rows = await res.json();
-const existing = rows.length > 0 ? rows[0] : null;
-if (existing) {
-if (existing.pin !== pin) {
-alert('PIN salah! Coba masukkan 4 digit PIN yang benar.');
+⚔️ LATIHAN HARIAN (+2 POIN)
+
+
+// Contoh state awal (hubungkan kembali dengan fungsi Supabase milikmu)
+let poinLatih = 50;
+let stats = { power: 99, speed: 99, defense: 99 };
+function tambahStat(jenis) {
+if (poinLatih <= 0) {
+alert("Poin latih habis! Klik Latihan Harian.");
 return;
 }
-currentUser = existing;
-} else {
-if (!selectedSchool) {
-alert('Akun baru wajib memilih Asal Sekolah terlebih dahulu!');
-return;
+poinLatih--;
+stats[jenis]++;
+updateUI();
 }
-const isPrincipal = (username === '@rdo.iny_' || username === '@rdo.iny');
-const newPlayer = {
-username: username,
-pin: pin,
-school: isPrincipal ? 'SEKOLAH VIP AO' : selectedSchool,
-power: isPrincipal ? 99 : 50,
-speed: isPrincipal ? 99 : 50,
-defense: isPrincipal ? 99 : 50,
-points: isPrincipal ? 50 : 5,
-wins: 0,
-losses: 0,
-donor_rank: isPrincipal ? 10 : 0,
-role: isPrincipal ? 'KEPALA SEKOLAH' : 'SISWA'
-};
-const insRes = await fetch(SUPABASE_URL + '/rest/v1/players', {
-method: 'POST',
-headers: headers,
-body: JSON.stringify(newPlayer)
-});
-if (!insRes.ok) throw new Error('Gagal mendaftarkan akun (' + insRes.status + ')');
-const inserted = await insRes.json();
-currentUser = inserted[0];
+function latihanHarian() {
+poinLatih += 2;
+updateUI();
 }
-localStorage.setItem('tb_user', JSON.stringify(currentUser));
-renderGame();
-} catch (err) {
-alert('Error koneksi: ' + err.message);
-} finally {
-btn.innerText = '🚀 MASUK KE ARENA';
-btn.disabled = false;
+function updateUI() {
+document.getElementById('ui-poin').innerText = poinLatih;
+document.getElementById('stat-power').innerText = stats.power;
+document.getElementById('stat-speed').innerText = stats.speed;
+document.getElementById('stat-defense').innerText = stats.defense;
+const avg = Math.floor((stats.power + stats.speed + stats.defense) / 3);
+document.getElementById('ui-ovr').innerText = avg;
 }
+function switchTab(tabName, el) {
+document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+el.classList.add('active');
+// Tambahkan logika pindah panel tab di sini
 }
-function renderGame() {
-document.getElementById('authSection').classList.add('hidden');
-document.getElementById('gameSection').classList.remove('hidden');
-const ovr = Math.round((currentUser.power + currentUser.speed + currentUser.defense) / 3);
-document.getElementById('dispUser').innerText = currentUser.username;
-document.getElementById('dispSchool').innerText = currentUser.school;
-document.getElementById('dispOvr').innerText = ovr;
-document.getElementById('dispPts').innerText = currentUser.points;
-document.getElementById('dispWin').innerText = currentUser.wins;
-document.getElementById('dispLoss').innerText = currentUser.losses;
-document.getElementById('dispRank').innerText = 'Rank ' + currentUser.donor_rank;
-document.getElementById('statPow').innerText = currentUser.power;
-document.getElementById('statSpd').innerText = currentUser.speed;
-document.getElementById('statDef').innerText = currentUser.defense;
-const badge = document.getElementById('dispRoleBadge');
-if (currentUser.role === 'KEPALA SEKOLAH') {
-badge.className = 'badge badge-kepsek';
-badge.innerText = '👑 KEPALA SEKOLAH AO';
-} else if (currentUser.donor_rank >= 10 || currentUser.role === 'GURU') {
-badge.className = 'badge badge-guru';
-badge.innerText = '🎓 GURU VIP AO';
-} else {
-badge.className = 'badge badge-rank';
-badge.innerText = 'PIONIR S0';
+function logout() {
+alert("Fungsi keluar dijalankan.");
 }
-loadChat();
-}
-async function syncPlayer() {
-await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(currentUser.username), {
-method: 'PATCH',
-headers: headers,
-body: JSON.stringify({
-power: currentUser.power,
-speed: currentUser.speed,
-defense: currentUser.defense,
-points: currentUser.points,
-wins: currentUser.wins,
-losses: currentUser.losses,
-donor_rank: currentUser.donor_rank,
-role: currentUser.role,
-school: currentUser.school
-})
-});
-localStorage.setItem('tb_user', JSON.stringify(currentUser));
-renderGame();
-}
-async function upgradeStat(type) {
-if (currentUser.points <= 0) return alert('Poin Latih habis! Klik Latihan Harian atau menang di Arena.');
-if (currentUser[type] >= 99) return alert('Stat sudah maksimal (99)!');
-currentUser[type] += 1;
-currentUser.points -= 1;
-await syncPlayer();
-}
-async function dailyTrain() {
-currentUser.points += 2;
-alert('Latihan selesai! Kamu mendapat +2 Poin Latih.');
-await syncPlayer();
-}
-async function startBattle(mode) {
-const enemySchool = document.getElementById('enemySchoolSelect').value;
-const myStance = document.getElementById('stanceSelect').value;
-const logBox = document.getElementById('battleLog');
-if (mode === 'KEPSEK' && enemySchool !== currentUser.school) {
-return alert('Tantangan Kepala Sekolah hanya bisa dilakukan melawan Kepsek di satu basis sekolah kamu sendiri!');
-}
-const stances = ['POWER', 'SPEED', 'DEFENSE'];
-const enemyStance = stances[Math.floor(Math.random() * stances.length)];
-const myOvr = Math.round((currentUser.power + currentUser.speed + currentUser.defense) / 3);
-const enemyOvr = mode === 'KEPSEK' ? 95 : Math.max(50, myOvr + (Math.floor(Math.random() * 11) - 5));
-let counterBonus = 0;
-let counterText = 'Imbang (Netral)';
-if (
-(myStance === 'POWER' && enemyStance === 'DEFENSE') ||
-(myStance === 'SPEED' && enemyStance === 'POWER') ||
-(myStance === 'DEFENSE' && enemyStance === 'SPEED')
-) {
-counterBonus = 10;
-counterText = 'COUNTER BERHASIL (+10 OVR)!';
-} else if (myStance !== enemyStance) {
-counterBonus = -8;
-counterText = 'TER-COUNTER LAWAN (-8 OVR)!';
-}
-const finalScore = (myOvr + counterBonus) - enemyOvr;
-const isWin = finalScore >= 0;
-if (isWin) {
-currentUser.wins += 1;
-currentUser.points += (mode === 'KEPSEK' ? 5 : 2);
-} else {
-currentUser.losses += 1;
-}
-logBox.innerHTML = '<strong>[' + (mode === 'KEPSEK' ? 'DUEL KEPSEK SATU BASIS' : 'TAWURAN ESTAFET 3V3') + ']</strong><br>Lawan: <strong>' + enemySchool + '</strong> (OVR ' + enemyOvr + ')<br>Gaya Kamu: <strong>' + myStance + '</strong> vs Lawan: <strong>' + enemyStance + '</strong><br>Status: <span style="color:#38bdf8;">' + counterText + '</span><br>Hasil Akhir: <strong style="color:' + (isWin ? '#4ade80' : '#f87171') + ';">' + (isWin ? 'MENANG! (+Poin Latih)' : 'KALAH! Tingkatkan Stat kamu.') + '</strong>';
-await fetch(SUPABASE_URL + '/rest/v1/battles', {
-method: 'POST',
-headers: headers,
-body: JSON.stringify({
-attacker: currentUser.username,
-target_school: enemySchool,
-mode: mode,
-result: isWin ? 'WIN' : 'LOSS'
-})
-});
-await syncPlayer();
-}
-async function loadChat() {
-const res = await fetch(SUPABASE_URL + '/rest/v1/messages?select=*&order=created_at.desc&limit=20', { headers });
-const data = await res.json();
-const box = document.getElementById('chatBox');
-if (!data || data.length === 0) {
-box.innerHTML = 'Belum ada pesan. Mulai obrolan pertama!';
-return;
-}
-box.innerHTML = data.reverse().map(function(m) { return '<div class="chat-msg"><strong style="color:#f59e0b;">' + m.sender + '</strong> <span style="font-size:10px; color:#64748b;">[' + m.school + ']</span>: ' + m.content + '</div>'; }).join('');
-box.scrollTop = box.scrollHeight;
-}
-async function sendChat() {
-const input = document.getElementById('chatInput');
-const text = input.value.trim();
-if (!text) return;
-input.value = '';
-await fetch(SUPABASE_URL + '/rest/v1/messages', {
-method: 'POST',
-headers: headers,
-body: JSON.stringify({
-sender: currentUser.username,
-school: currentUser.school,
-content: text
-})
-});
-loadChat();
-}
-async function redeemCode() {
-const code = document.getElementById('vipCodeInput').value.trim().toUpperCase();
-if (!code) return alert('Masukkan kode voucher dulu!');
-const res = await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(code) + '&is_used=eq.false&select=*', { headers });
-const rows = await res.json();
-const data = rows.length > 0 ? rows[0] : null;
-if (!data) return alert('Kode tidak valid atau sudah pernah dipakai!');
-const newRank = Math.min(10, data.rank_level || 1);
-currentUser.donor_rank = Math.max(currentUser.donor_rank, newRank);
-currentUser.points += (newRank * 3);
-if (currentUser.donor_rank >= 10) {
-currentUser.school = 'SEKOLAH VIP AO';
-currentUser.role = 'GURU';
-alert('SELAMAT! Kamu mencapai DONATUR RANK 10 dan resmi diangkat menjadi GURU PARTNERSHIP di SEKOLAH VIP AO!');
-} else {
-alert('Berhasil klaim Kode Donatur Rank ' + newRank + '! Poin Latih bertambah.');
-}
-await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(code), {
-method: 'PATCH',
-      headers: headers,
-      body: JSON.stringify({ is_used: true, used_by: currentUser.username })
-    });
-    await syncPlayer();
-  }
-
-  function switchTab(tabId, btn) {
-    ['tabStat', 'tabArena', 'tabChat', 'tabVip'].forEach(id => document.getElementById(id).classList.add('hidden'));
-    document.getElementById(tabId).classList.remove('hidden');
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    if (tabId === 'tabChat') loadChat();
-  }
-
-  function logout() {
-    localStorage.removeItem('tb_user');
-    location.reload();
-  }
-
-  window.onload = () => {
-    const saved = localStorage.getItem('tb_user');
-    if (saved) {
-      currentUser = JSON.parse(saved);
-      renderGame();
-    }
-  };
-</script>
-</body>
-</html>
