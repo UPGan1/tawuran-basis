@@ -527,6 +527,1048 @@ function playFightCinema(enemyName, win, onFinish) {
     step++;
   }, 900);
 }
+function playTrainCinema(namaLatihan, onSelesai) {
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(5,7,12,0.94);z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px';
+
+  const box = document.createElement('div');
+  box.style.cssText = 'max-width:420px;width:100%;background:#0f172a;border:2px solid #38bdf8;border-radius:16px;padding:14px;color:#fff;font-family:sans-serif;text-align:center';
+
+  const judul = document.createElement('div');
+  judul.style.cssText = 'font-weight:900;font-size:13px;color:#38bdf8;margin-bottom:8px;letter-spacing:0.5px';
+  judul.textContent = '🥊 SESI LATIHAN: ' + namaLatihan.toUpperCase();
+  box.appendChild(judul);
+
+  const cv = document.createElement('canvas');
+  cv.width = 380;
+  cv.height = 175;
+  cv.style.cssText = 'width:100%;background:radial-gradient(circle at center,#1e293b,#090d16);border-radius:12px;border:1px solid #334155;display:block';
+  box.appendChild(cv);
+
+  const status = document.createElement('div');
+  status.style.cssText = 'font-size:12px;font-weight:800;color:#fbbf24;margin-top:10px';
+  status.textContent = '⏳ Sedang menempa fisik...';
+  box.appendChild(status);
+
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+
+  const ctx = cv.getContext('2d');
+  let hitung = 0, jurus = 'IDLE', ayun = 0, efek = '';
+
+  const loop = setInterval(function() {
+    ctx.clearRect(0, 0, 380, 175);
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(0, 148, 380, 27);
+
+    // Tiang & Samsak / Ban Bekas
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(255, 0); ctx.lineTo(255 + ayun, 48); ctx.stroke();
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(236 + ayun, 48, 38, 56);
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2; ctx.strokeRect(236 + ayun, 48, 38, 56);
+
+    // Karakter Petarung
+    ctx.save();
+    ctx.translate(160, 96);
+    ctx.strokeStyle = '#334155'; ctx.lineWidth = 7; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-6, 18); ctx.lineTo(-14, 50); ctx.stroke();
+    ctx.fillStyle = '#22c55e'; ctx.fillRect(-18, 47, 11, 6);
+    ctx.beginPath(); ctx.moveTo(6, 18);
+    if (jurus === 'KICK') { ctx.lineTo(46, 4); ctx.stroke(); ctx.fillRect(42, -1, 11, 7); }
+    else { ctx.lineTo(14, 50); ctx.stroke(); ctx.fillRect(10, 47, 11, 6); }
+    ctx.fillStyle = '#f8fafc'; ctx.fillRect(-11, -18, 22, 36);
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(-12, -18, 6, 36); ctx.fillRect(6, -18, 6, 36);
+    ctx.fillStyle = '#fed7aa'; ctx.beginPath(); ctx.arc(0, -31, 10, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#090d16'; ctx.beginPath(); ctx.arc(0, -34, 10, Math.PI, 0); ctx.fill();
+    ctx.strokeStyle = '#fed7aa'; ctx.lineWidth = 6;
+    if (jurus === 'PUNCH') {
+      ctx.beginPath(); ctx.moveTo(8, -10); ctx.lineTo(48, -12); ctx.stroke();
+      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(50, -12, 5, 0, Math.PI * 2); ctx.fill();
+    } else {
+      ctx.beginPath(); ctx.moveTo(8, -10); ctx.lineTo(22, -14); ctx.stroke();
+    }
+    ctx.restore();
+
+    if (efek) {
+      ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 15px sans-serif';
+      ctx.fillText(efek, 215, 38);
+    }
+  }, 30);
+
+  const pukul = setInterval(function() {
+    hitung++;
+    if (hitung > 5) {
+      clearInterval(pukul);
+      clearInterval(loop);
+      modal.remove();
+      if (onSelesai) onSelesai();
+      return;
+    }
+    jurus = (hitung % 2 === 0) ? 'KICK' : 'PUNCH';
+    ayun = 16;
+    efek = (hitung % 2 === 0) ? '💥 DUK!' : '💥 DUAR!';
+    status.textContent = '🔥 Kombo Latihan ' + hitung + '/5 (+Stat Naik!)';
+    setTimeout(function() { jurus = 'IDLE'; ayun = 0; efek = ''; }, 320);
+  }, 600);
+}
+function upgradeRoyalArenaUI() {
+  if (!document.getElementById('royalThemeCss')) {
+    const st = document.createElement('style');
+    st.id = 'royalThemeCss';
+    st.textContent = `
+      body { background: radial-gradient(circle at top, #181d2c 0%, #06080d 75%) !important; color: #f8fafc !important; }
+      .container { max-width: 480px !important; padding-bottom: 90px !important; }
+      .header { background: rgba(10, 14, 24, 0.92) !important; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(245, 158, 11, 0.4) !important; border-radius: 0 0 18px 18px !important; box-shadow: 0 6px 24px rgba(0,0,0,0.6) !important; }
+      .header h1 { background: linear-gradient(180deg, #fef08a 0%, #f59e0b 65%, #b45309 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900 !important; letter-spacing: 0.8px; }
+      .card { background: linear-gradient(165deg, rgba(22, 29, 46, 0.94), rgba(10, 13, 22, 0.98)) !important; border: 1px solid rgba(245, 158, 11, 0.35) !important; border-radius: 18px !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55) !important; }
+      .btn-primary, .btn-war { background: linear-gradient(135deg, #f59e0b, #d97706) !important; color: #07090e !important; font-weight: 900 !important; border-radius: 12px !important; box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35) !important; letter-spacing: 0.5px; }
+      .btn-danger { background: linear-gradient(135deg, #ef4444, #b91c1c) !important; border-radius: 12px !important; font-weight: 900 !important; box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35) !important; }
+      .tab-btn { border-radius: 12px !important; font-weight: 800 !important; transition: all 0.2s ease; }
+      .tab-btn.active { background: linear-gradient(135deg, #f59e0b, #b45309) !important; color: #07090e !important; box-shadow: 0 0 15px rgba(245, 158, 11, 0.45) !important; }
+      @keyframes floatGlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+      .royal-float { animation: floatGlow 3s ease-in-out infinite; }
+    `;
+    document.head.appendChild(st);
+  }
+
+  const appDiv = document.getElementById('appScreen');
+  if (!appDiv || appDiv.classList.contains('hidden')) return;
+
+  let stage = document.getElementById('royalHeroStage');
+  if (!stage) {
+    stage = document.createElement('div');
+    stage.id = 'royalHeroStage';
+    stage.style.cssText = 'position:relative;border-radius:20px;padding:16px;margin-bottom:14px;background:radial-gradient(ellipse at 50% 35%,rgba(245,158,11,0.28) 0%,rgba(13,18,30,0.96) 72%);border:1.5px solid rgba(251,191,36,0.6);box-shadow:0 12px 35px rgba(0,0,0,0.65),inset 0 0 25px rgba(245,158,11,0.12);overflow:hidden';
+    appDiv.insertBefore(stage, appDiv.firstChild);
+  }
+
+  const u = typeof currentUser !== 'undefined' && currentUser ? currentUser : { username: '@rdo.iny_', school: 'SEKOLAH VIP AO', role: 'KEPALA SEKOLAH', power: 99, speed: 99, defense: 99, wins: 0, losses: 0, points: 50 };
+  const ovr = Math.round(((u.power || 50) + (u.speed || 50) + (u.defense || 50)) / 3);
+
+  stage.innerHTML = '';
+
+  // Baris Lencana Melayang Atas (Piagam Season 0 & Basis)
+  const topRow = document.createElement('div');
+  topRow.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px';
+
+  const badgeLeft = document.createElement('div');
+  badgeLeft.className = 'royal-float';
+  badgeLeft.style.cssText = 'background:rgba(10,14,24,0.88);border:1px solid rgba(251,191,36,0.7);border-radius:11px;padding:6px 10px;font-size:10px;font-weight:900;color:#fde68a;box-shadow:0 4px 14px rgba(245,158,11,0.25)';
+  badgeLeft.textContent = '🏅 PIAGAM SEASON 0 • Pionir';
+
+  const badgeRight = document.createElement('div');
+  badgeRight.className = 'royal-float';
+  badgeRight.style.cssText = 'background:rgba(10,14,24,0.88);border:1px solid rgba(56,189,248,0.6);border-radius:11px;padding:6px 10px;font-size:10px;font-weight:900;color:#38bdf8;text-align:right';
+  badgeRight.textContent = '🛡️ ' + (u.school || 'BASIS');
+
+  topRow.append(badgeLeft, badgeRight);
+  stage.appendChild(topRow);
+
+  // Panggung Karakter Petarung di Tengah
+  const arenaBox = document.createElement('div');
+  arenaBox.style.cssText = 'text-align:center;margin:4px 0 8px;position:relative';
+
+  const cv = document.createElement('canvas');
+  cv.width = 180;
+  cv.height = 140;
+  cv.style.cssText = 'display:block;margin:0 auto';
+  const ctx = cv.getContext('2d');
+
+  // Sorotan Cahaya Podium Emas
+  const grad = ctx.createRadialGradient(90, 124, 6, 90, 124, 68);
+  grad.addColorStop(0, 'rgba(251, 191, 36, 0.75)');
+  grad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+  ctx.fillStyle = grad;
+  ctx.beginPath(); ctx.ellipse(90, 124, 68, 12, 0, 0, Math.PI * 2); ctx.fill();
+
+  // Gambar Karakter Berseragam
+  ctx.save();
+  ctx.translate(90, 74);
+  ctx.strokeStyle = '#334155'; ctx.lineWidth = 8; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-7, 16); ctx.lineTo(-14, 48); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(7, 16); ctx.lineTo(14, 48); ctx.stroke();
+  ctx.fillStyle = '#dc2626'; ctx.fillRect(-19, 45, 12, 6); ctx.fillRect(9, 45, 12, 6);
+  ctx.fillStyle = '#f8fafc'; ctx.fillRect(-13, -20, 26, 38);
+  ctx.fillStyle = '#0f172a'; ctx.fillRect(-14, -20, 7, 38); ctx.fillRect(7, -20, 7, 38);
+  ctx.fillStyle = '#fed7aa'; ctx.beginPath(); ctx.arc(0, -34, 11, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#090d16'; ctx.beginPath(); ctx.arc(0, -37, 11, Math.PI, 0); ctx.fill();
+  ctx.strokeStyle = '#fed7aa'; ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.moveTo(-12, -12); ctx.lineTo(-22, 6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(12, -12); ctx.lineTo(22, 6); ctx.stroke();
+  ctx.restore();
+
+  arenaBox.appendChild(cv);
+
+  const nameTag = document.createElement('div');
+  nameTag.style.cssText = 'font-size:18px;font-weight:900;color:#fff;letter-spacing:0.4px;text-shadow:0 2px 10px rgba(0,0,0,0.8)';
+  nameTag.textContent = u.username + '  [OVR ' + ovr + ']';
+
+  const roleTag = document.createElement('div');
+  roleTag.style.cssText = 'font-size:11px;font-weight:800;color:#fbbf24;margin-top:2px';
+  roleTag.textContent = '👑 ' + (u.role || 'SISWA') + ' • Rekor: ' + (u.wins || 0) + 'W - ' + (u.losses || 0) + 'L • Poin Latih: ' + (u.points || 0);
+
+  arenaBox.append(nameTag, roleTag);
+  stage.appendChild(arenaBox);
+
+  // Kotak Timer Hitung Mundur Tawuran Akbar (12.00 & 21.30 WIB)
+  const warTimerBox = document.createElement('div');
+  warTimerBox.style.cssText = 'background:rgba(6,8,13,0.88);border:1px solid rgba(239,68,68,0.55);border-radius:14px;padding:10px;text-align:center';
+
+  const warLabel = document.createElement('div');
+  warLabel.style.cssText = 'font-size:10px;font-weight:900;color:#ef4444;letter-spacing:1.2px';
+  warLabel.textContent = '⚔️ TAWURAN AKBAR BERIKUTNYA (12.00 & 21.30 WIB)';
+
+  const warClock = document.createElement('div');
+  warClock.id = 'royalWarClock';
+  warClock.style.cssText = 'font-size:26px;font-weight:900;color:#fff;margin:2px 0;letter-spacing:2px;font-variant-numeric:tabular-nums';
+  warClock.textContent = '00:00:00';
+
+  warTimerBox.append(warLabel, warClock);
+  stage.appendChild(warTimerBox);
+
+  if (!window.royalClockStarted) {
+    window.royalClockStarted = true;
+    setInterval(function() {
+      const elClock = document.getElementById('royalWarClock');
+      if (!elClock) return;
+      const now = new Date();
+      const target = new Date();
+      if (now.getHours() < 12) target.setHours(12, 0, 0, 0);
+      else if (now.getHours() < 21 || (now.getHours() === 21 && now.getMinutes() < 30)) target.setHours(21, 30, 0, 0);
+      else { target.setDate(target.getDate() + 1); target.setHours(12, 0, 0, 0); }
+      const diff = Math.max(0, Math.floor((target - now) / 1000));
+      const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+      const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+      const s = String(diff % 60).padStart(2, '0');
+      elClock.textContent = h + ':' + m + ':' + s;
+    }, 1000);
+  }
+}
+
+setInterval(upgradeRoyalArenaUI, 800);
+async function initRoyalMading() {
+  const appDiv = document.getElementById('appScreen');
+  if (!appDiv || appDiv.classList.contains('hidden')) return;
+  if (document.getElementById('royalMadingBox')) return;
+
+  const mading = document.createElement('div');
+  mading.id = 'royalMadingBox';
+  mading.style.cssText = 'background:linear-gradient(165deg,rgba(22,29,46,0.95),rgba(10,13,22,0.98));border:1px solid rgba(245,158,11,0.4);border-radius:18px;padding:15px;margin-top:14px;margin-bottom:14px;box-shadow:0 10px 28px rgba(0,0,0,0.55)';
+
+  const head = document.createElement('div');
+  head.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:12px';
+  const hTitle = document.createElement('div');
+  hTitle.style.cssText = 'font-size:13px;font-weight:900;color:#fbbf24;letter-spacing:0.6px';
+  hTitle.textContent = '📋 MADING & PENGUMUMAN RESMI';
+  const hBadge = document.createElement('span');
+  hBadge.style.cssText = 'background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#fca5a5;font-size:9px;font-weight:900;padding:3px 8px;border-radius:99px';
+  hBadge.textContent = 'INFO TERKINI';
+  head.append(hTitle, hBadge);
+  mading.appendChild(head);
+
+  const u = typeof currentUser !== 'undefined' && currentUser ? currentUser : {};
+  if (u.role === 'KEPALA SEKOLAH' || u.username === '@rdo.iny_' || u.username === '@rdo.iny') {
+    const adminPanel = document.createElement('div');
+    adminPanel.style.cssText = 'background:rgba(9,13,22,0.85);border:1px dashed #f59e0b;border-radius:12px;padding:10px;margin-bottom:12px';
+
+    const admLbl = document.createElement('div');
+    admLbl.style.cssText = 'font-size:10px;font-weight:900;color:#fbbf24;margin-bottom:6px';
+    admLbl.textContent = '👑 KEPALA SEKOLAH: TEMPEL PENGUMUMAN BARU';
+
+    const inpTitle = document.createElement('input');
+    inpTitle.placeholder = 'Judul Pengumuman (contoh: Hasil War Malam Ini!)';
+    inpTitle.style.cssText = 'width:100%;box-sizing:border-box;padding:9px 10px;margin-bottom:6px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:12px';
+
+    const inpBody = document.createElement('textarea');
+    inpBody.rows = 2;
+    inpBody.placeholder = 'Tulis isi pengumuman untuk seluruh pemain...';
+    inpBody.style.cssText = 'width:100%;box-sizing:border-box;padding:9px 10px;margin-bottom:8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:12px;resize:none';
+
+    const btnPost = document.createElement('button');
+    btnPost.textContent = '📌 TEMPEL KE MADING';
+    btnPost.style.cssText = 'width:100%;padding:10px;border:none;border-radius:8px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#07090e;font-weight:900;font-size:11px;cursor:pointer';
+    btnPost.onclick = async function() {
+      const t = inpTitle.value.trim();
+      const b = inpBody.value.trim();
+      if (!t || !b) return alert('Isi judul dan isi pengumuman dulu!');
+      btnPost.textContent = '⏳ MENEMPEL...';
+      try {
+        await fetch(SUPABASE_URL + '/rest/v1/announcements', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ author: u.username || '@rdo.iny_', tag: 'KEPALA SEKOLAH', title: t, body: b })
+        });
+        inpTitle.value = '';
+        inpBody.value = '';
+        alert('Pengumuman berhasil ditempel ke Mading!');
+        mading.remove();
+        initRoyalMading();
+      } catch (e) {
+        alert('Gagal menempel: ' + e.message);
+      } finally {
+        btnPost.textContent = '📌 TEMPEL KE MADING';
+      }
+    };
+
+    adminPanel.append(admLbl, inpTitle, inpBody, btnPost);
+    mading.appendChild(adminPanel);
+  }
+
+  const notesList = document.createElement('div');
+  mading.appendChild(notesList);
+
+  function buatKertasTempel(tag, judul, isi, warnaBg) {
+    const note = document.createElement('div');
+    note.style.cssText = 'background:' + warnaBg + ';color:#1e1b18;border-radius:12px;padding:13px;margin-bottom:10px;position:relative;box-shadow:0 6px 15px rgba(0,0,0,0.45)';
+
+    const pin = document.createElement('div');
+    pin.style.cssText = 'width:11px;height:11px;background:#dc2626;border-radius:50%;margin:-18px auto 6px;border:2px solid #7f1d1d;box-shadow:0 2px 4px rgba(0,0,0,0.5)';
+
+    const tagEl = document.createElement('span');
+    tagEl.style.cssText = 'display:inline-block;background:#1e1b18;color:#fde047;font-size:9px;font-weight:900;padding:2px 7px;border-radius:4px;margin-bottom:5px';
+    tagEl.textContent = tag;
+
+    const titleEl = document.createElement('div');
+    titleEl.style.cssText = 'font-size:13px;font-weight:900;margin-bottom:4px;line-height:1.3';
+    titleEl.textContent = judul;
+
+    const bodyEl = document.createElement('div');
+    bodyEl.style.cssText = 'font-size:11.5px;line-height:1.45;color:#292524';
+    bodyEl.textContent = isi;
+
+    note.append(pin, tagEl, titleEl, bodyEl);
+    return note;
+  }
+
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/announcements?select=*&order=created_at.desc&limit=8', { headers: headers });
+    const rows = await res.json();
+    if (rows && rows.length > 0) {
+      rows.forEach(function(item) {
+        notesList.appendChild(buatKertasTempel(
+          '📢 ' + (item.tag || 'PENGUMUMAN') + ' • ' + (item.author || 'ADMIN'),
+          item.title,
+          item.body,
+          'linear-gradient(145deg,#fef08a,#fde047)'
+        ));
+      });
+    }
+  } catch (err) {}
+
+  notesList.appendChild(buatKertasTempel(
+    '👑 INFO SEASON 0 • RESMI',
+    'Musim Perintis Tawuran Basis Resmi Dibuka!',
+    'Latih karaktermu, menangkan duel antar basis pada jadwal Tawuran Akbar 12.00 & 21.30 WIB, dan amankan Piagam Permanen Season 0 sebelum reset!',
+    'linear-gradient(145deg,#fde68a,#fcd34d)'
+  ));
+
+  notesList.appendChild(buatKertasTempel(
+    '🎓 JALUR GURU VIP AO',
+    'Rekrutmen Guru Partnership (Donatur Rank 10)',
+    'Pemain yang menukarkan kode voucher hingga mencapai Donatur Rank 10 otomatis diangkat menjadi Guru Partnership resmi di Sekolah VIP AO bersama Kepala Sekolah!',
+    'linear-gradient(145deg,#fed7aa,#fdba74)'
+  ));
+
+  appDiv.appendChild(mading);
+}
+
+setInterval(initRoyalMading, 1000);
+const DAFTAR_JULUKAN = [
+  'Si Tangan Besi', 'Raja Aspal Malam', 'Bayangan Tanpa Jejak', 'Singa Lapangan',
+  'Malaikat Pencabut Nyawa', 'Dewa Tawuran', 'Petarung Berdarah Dingin', 'Pangeran Kegelapan',
+  'Tornado Jalanan', 'Algojo Basis', 'Harimau Sumatera', 'Kilat Kuning',
+  'Benteng Baja', 'Sang Penakluk', 'Pemburu Bintang', 'Ksatria Tanpa Mahkota',
+  'Penguasa Gerbang', 'Legenda Hidup', 'Si Gila Duel', 'Sang Juara Bertahan'
+];
+
+function getPangkatByLevel(lv) {
+  if (lv <= 5) return '🥉 Rank I • Bocah Ingusan';
+  if (lv <= 15) return '🥈 Rank II • Jagoan Kampung';
+  if (lv <= 25) return '🥇 Rank III • Preman Pasar';
+  if (lv <= 35) return '💎 Rank IV • Panglima Basis';
+  const tier = Math.floor((lv - 26) / 10) + 4;
+  return '👑 Rank ' + tier + ' • Legenda Hidup';
+}
+
+function getReqXpForNextLevel(lv) {
+  if (lv === 1) return 100;
+  return 100 + ((lv - 1) * 150);
+}
+
+function drawMiniAvatar(canvas, shirtColor, shoeColor, hairStyle) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2 + 6;
+
+  // Sorotan bawah
+  const g = ctx.createRadialGradient(cx, cy + 44, 4, cx, cy + 44, 45);
+  g.addColorStop(0, 'rgba(251,191,36,0.65)');
+  g.addColorStop(1, 'rgba(251,191,36,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.ellipse(cx, cy + 44, 45, 9, 0, 0, Math.PI * 2); ctx.fill();
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.strokeStyle = '#334155'; ctx.lineWidth = 7; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-6, 14); ctx.lineTo(-12, 42); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(6, 14); ctx.lineTo(12, 42); ctx.stroke();
+  ctx.fillStyle = shoeColor || '#dc2626';
+  ctx.fillRect(-17, 39, 11, 5); ctx.fillRect(7, 39, 11, 5);
+
+  // Seragam
+  ctx.fillStyle = shirtColor || '#f8fafc';
+  ctx.fillRect(-12, -18, 24, 34);
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(-13, -18, 6, 34); ctx.fillRect(7, -18, 6, 34);
+
+  // Kepala & Rambut
+  ctx.fillStyle = '#fed7aa';
+  ctx.beginPath(); ctx.arc(0, -30, 10, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = hairStyle === 'PIRANG' ? '#facc15' : (hairStyle === 'MERAH' ? '#ef4444' : '#090d16');
+  ctx.beginPath(); ctx.arc(0, -33, 10, Math.PI, 0); ctx.fill();
+  if (hairStyle === 'MOHAWK') { ctx.fillRect(-3, -44, 6, 8); }
+
+  // Lengan
+  ctx.strokeStyle = '#fed7aa'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(-11, -11); ctx.lineTo(-20, 4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(11, -11); ctx.lineTo(20, 4); ctx.stroke();
+  ctx.restore();
+}
+
+async function initRoyalProfile() {
+  const appDiv = document.getElementById('appScreen');
+  if (!appDiv || appDiv.classList.contains('hidden')) return;
+  if (document.getElementById('royalProfileSection')) return;
+  if (typeof currentUser === 'undefined' || !currentUser) return;
+
+  // Pastikan pendatang baru mulai dari 10 per stat + 10 poin bonus
+  if (!currentUser._init10Done && currentUser.role !== 'KEPALA SEKOLAH') {
+    if (currentUser.power === 50 && currentUser.speed === 50 && currentUser.defense === 50) {
+      currentUser.power = 10;
+      currentUser.speed = 10;
+      currentUser.defense = 10;
+      currentUser.stamina = 10;
+      currentUser.endurance = 10;
+      currentUser.points = 10;
+    }
+    currentUser._init10Done = true;
+  }
+  currentUser.stamina = currentUser.stamina || 10;
+  currentUser.endurance = currentUser.endurance || 10;
+  currentUser.level = currentUser.level || 1;
+  currentUser.xp = currentUser.xp || 0;
+  currentUser.draws = currentUser.draws || 0;
+  currentUser.kos = currentUser.kos || 0;
+  currentUser.stars = currentUser.stars || 10;
+  currentUser.silver = currentUser.silver !== undefined ? currentUser.silver : 500;
+  currentUser.gold = currentUser.gold !== undefined ? currentUser.gold : 0;
+  currentUser.title = currentUser.title || DAFTAR_JULUKAN;
+  currentUser.shirtColor = currentUser.shirtColor || '#f8fafc';
+  currentUser.shoeColor = currentUser.shoeColor || '#dc2626';
+  currentUser.hairStyle = currentUser.hairStyle || 'HITAM';
+
+  const wrap = document.createElement('div');
+  wrap.id = 'royalProfileSection';
+  wrap.style.cssText = 'margin-top:14px;margin-bottom:20px';
+
+  // 1. KARTU IDENTITAS PROFIL, JULUKAN, PANGKAT, KEPSEK, REKOR & EXP
+  const card = document.createElement('div');
+  card.style.cssText = 'background:linear-gradient(165deg,rgba(22,29,46,0.96),rgba(10,13,22,0.99));border:1.5px solid rgba(245,158,11,0.5);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 10px 30px rgba(0,0,0,0.6)';
+
+  const topHead = document.createElement('div');
+  topHead.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;gap:10px';
+
+  const leftInfo = document.createElement('div');
+  const igRow = document.createElement('div');
+  igRow.style.cssText = 'font-size:18px;font-weight:900;color:#fff;display:flex;align-items:center;gap:6px';
+  igRow.textContent = currentUser.username + ' ✅';
+
+  const rankBadge = document.createElement('div');
+  rankBadge.style.cssText = 'display:inline-block;background:rgba(245,158,11,0.18);border:1px solid #f59e0b;color:#fde68a;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;margin-top:4px';
+  rankBadge.textContent = getPangkatByLevel(currentUser.level);
+
+  const schoolInfo = document.createElement('div');
+  schoolInfo.style.cssText = 'font-size:11px;color:#38bdf8;font-weight:800;margin-top:6px';
+  schoolInfo.textContent = '🏫 ' + currentUser.school + ' • 👑 Kepsek Periode 2 Bulan: ' + (currentUser.role === 'KEPALA SEKOLAH' ? currentUser.username : '@rdo.iny_');
+
+  leftInfo.append(igRow, rankBadge, schoolInfo);
+
+  const ovrVal = Math.round(((currentUser.power||10) + (currentUser.speed||10) + (currentUser.stamina||10) + (currentUser.defense||10) + (currentUser.endurance||10)) / 5);
+  const ovrBox = document.createElement('div');
+  ovrBox.style.cssText = 'background:linear-gradient(135deg,#f59e0b,#b45309);color:#07090e;padding:8px 12px;border-radius:12px;text-align:center;font-weight:900;min-width:54px';
+  ovrBox.innerHTML = '<div style="font-size:20px;line-height:1">' + ovrVal + '</div><div style="font-size:9px">OVR</div>';
+
+  topHead.append(leftInfo, ovrBox);
+  card.appendChild(topHead);
+
+  // Pilih 20 Julukan Keren
+  const titleRow = document.createElement('div');
+  titleRow.style.cssText = 'margin-top:12px;display:flex;gap:6px;align-items:center';
+  const selTitle = document.createElement('select');
+  selTitle.style.cssText = 'flex:1;padding:8px 10px;border-radius:8px;border:1px solid #334155;background:#090d16;color:#fbbf24;font-size:11px;font-weight:800';
+  DAFTAR_JULUKAN.forEach(function(j) {
+    const opt = document.createElement('option');
+    opt.value = j;
+    opt.textContent = '🏷️ Julukan: "' + j + '"';
+    if (currentUser.title === j) opt.selected = true;
+    selTitle.appendChild(opt);
+  });
+  selTitle.onchange = async function() {
+    currentUser.title = selTitle.value;
+    localStorage.setItem('tb_user', JSON.stringify(currentUser));
+    await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(currentUser.username), {
+      method: 'PATCH', headers: headers, body: JSON.stringify({ title: currentUser.title })
+    });
+  };
+  titleRow.appendChild(selTitle);
+  card.appendChild(titleRow);
+
+  // Bar EXP + Level
+  const reqXp = getReqXpForNextLevel(currentUser.level);
+  const pctXp = Math.min(100, Math.round((currentUser.xp / reqXp) * 100));
+  const expWrap = document.createElement('div');
+  expWrap.style.cssText = 'margin-top:12px;background:#090d16;padding:10px;border-radius:10px;border:1px solid #1e293b';
+  expWrap.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:800;margin-bottom:5px">' +
+      '<span style="color:#cbd5e1">EXP: ' + currentUser.xp + ' / ' + reqXp + '</span>' +
+      '<span style="background:#2563eb;color:#fff;padding:2px 8px;border-radius:6px">LEVEL ' + currentUser.level + '</span>' +
+    '</div>' +
+    '<div style="width:100%;height:8px;background:#1e293b;border-radius:99px;overflow:hidden">' +
+      '<div style="width:' + pctXp + '%;height:100%;background:linear-gradient(90deg,#f59e0b,#fde047)"></div>' +
+    '</div>';
+  card.appendChild(expWrap);
+
+  // Rekor Per Season (Menang, Kalah, Seri, K.O)
+  const recGrid = document.createElement('div');
+  recGrid.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;text-align:center';
+  [
+    ['MENANG', currentUser.wins || 0, '#4ade80'],
+    ['KALAH', currentUser.losses || 0, '#f87171'],
+    ['SERI', currentUser.draws || 0, '#94a3b8'],
+    ['K.O.', currentUser.kos || 0, '#fbbf24']
+  ].forEach(function(item) {
+    const b = document.createElement('div');
+    b.style.cssText = 'background:#090d16;padding:8px 4px;border-radius:10px;border:1px solid #1e293b';
+    b.innerHTML = '<div style="font-size:9px;color:#94a3b8;font-weight:800">' + item + '</div><div style="font-size:15px;font-weight:900;color:' + item + '">' + item + '</div>';
+    recGrid.appendChild(b);
+  });
+  card.appendChild(recGrid);
+  wrap.appendChild(card);
+
+  // 2. KARTU 5 STAT PETARUNG (Pukulan, Kecepatan, Stamina, Pertahanan, Daya Tahan)
+  const statCard = document.createElement('div');
+  statCard.style.cssText = 'background:#111623;border:1px solid rgba(245,158,11,0.35);border-radius:16px;padding:14px;margin-bottom:14px';
+  statCard.innerHTML = '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:900;color:#fbbf24;margin-bottom:10px"><span>📊 5 STAT PETARUNG</span><span>Sisa Poin: <strong style="color:#4ade80">' + (currentUser.points || 0) + '</strong></span></div>';
+
+  [
+    ['power', '🥊 Pukulan'],
+    ['speed', '⚡ Kecepatan'],
+    ['stamina', '🦵 Stamina'],
+    ['defense', '🛡️ Pertahanan'],
+    ['endurance', '💪 Daya Tahan']
+  ].forEach(function(st) {
+    const val = currentUser[st] || 10;
+    const row = document.createElement('div');
+    row.style.cssText = 'margin-bottom:8px';
+    const topR = document.createElement('div');
+topR.style.cssText = 'display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;margin-bottom:3px';
+const lbl = document.createElement('span');
+lbl.textContent = st + ': ' + val;
+const btnPlus = document.createElement('button');
+btnPlus.textContent = '+1';
+btnPlus.style.cssText = 'padding:3px 9px;border:none;border-radius:6px;background:#2563eb;color:#fff;font-weight:900;font-size:11px;cursor:pointer';
+btnPlus.onclick = async function() {
+if ((currentUser.points || 0) <= 0) return alert('Poin stat habis! Ikuti latihan atau duel untuk naik level.');
+if (val >= 99) return alert('Stat sudah maksimal 99!');
+currentUser[st] = val + 1;
+currentUser.points -= 1;
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+if (typeof syncPlayer === 'function') await syncPlayer();
+wrap.remove();
+initRoyalProfile();
+};
+topR.append(lbl, btnPlus);
+const barBg = document.createElement('div');
+barBg.style.cssText = 'height:6px;background:#1e293b;border-radius:99px;overflow:hidden';
+const barFill = document.createElement('div');
+barFill.style.cssText = 'width:' + Math.min(100, val) + '%;height:100%;background:#38bdf8';
+barBg.appendChild(barFill);
+row.append(topR, barBg);
+statCard.appendChild(row);
+});
+wrap.appendChild(statCard);
+// 3. PETARUNG KAMU (ROMBAK TAMPILAN + DOMPET GOLD & SILVER)
+const customCard = document.createElement('div');
+customCard.style.cssText = 'background:#111623;border:1px solid rgba(245,158,11,0.35);border-radius:16px;padding:14px;margin-bottom:14px';
+customCard.innerHTML =
+'' +
+'👕 PETARUNG KAMU (ROMBAK TAMPILAN)' +
+'🪙 ' + currentUser.silver + '  |  👑 ' + currentUser.gold + '' +
+'';
+const previewCv = document.createElement('canvas');
+previewCv.width = 160;
+previewCv.height = 120;
+previewCv.style.cssText = 'display:block;margin:0 auto 10px;background:#090d16;border-radius:12px;border:1px solid #334155';
+drawMiniAvatar(previewCv, currentUser.shirtColor, currentUser.shoeColor, currentUser.hairStyle);
+customCard.appendChild(previewCv);
+const btnRow = document.createElement('div');
+btnRow.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:6px';
+const bShirt = document.createElement('button');
+bShirt.textContent = '👕 Ganti Baju';
+bShirt.style.cssText = 'padding:8px;border:1px solid #334155;border-radius:8px;background:#1e293b;color:#fff;font-size:11px;font-weight:800;cursor:pointer';
+bShirt.onclick = function() {
+const colors = ['#f8fafc', '#1e293b', '#991b1b', '#1e3a8a', '#f59e0b'];
+currentUser.shirtColor = colors[(colors.indexOf(currentUser.shirtColor) + 1) % colors.length];
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+drawMiniAvatar(previewCv, currentUser.shirtColor, currentUser.shoeColor, currentUser.hairStyle);
+};
+const bHair = document.createElement('button');
+bHair.textContent = '💇 Gaya Rambut';
+bHair.style.cssText = 'padding:8px;border:1px solid #334155;border-radius:8px;background:#1e293b;color:#fff;font-size:11px;font-weight:800;cursor:pointer';
+bHair.onclick = function() {
+const hairs = ['HITAM', 'PIRANG', 'MERAH', 'MOHAWK'];
+currentUser.hairStyle = hairs[(hairs.indexOf(currentUser.hairStyle) + 1) % hairs.length];
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+drawMiniAvatar(previewCv, currentUser.shirtColor, currentUser.shoeColor, currentUser.hairStyle);
+};
+const bShoe = document.createElement('button');
+bShoe.textContent = '👟 Ganti Sepatu';
+bShoe.style.cssText = 'padding:8px;border:1px solid #334155;border-radius:8px;background:#1e293b;color:#fff;font-size:11px;font-weight:800;cursor:pointer';
+bShoe.onclick = function() {
+const shoes = ['#dc2626', '#22c55e', '#38bdf8', '#fbbf24', '#ffffff'];
+currentUser.shoeColor = shoes[(shoes.indexOf(currentUser.shoeColor) + 1) % shoes.length];
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+drawMiniAvatar(previewCv, currentUser.shirtColor, currentUser.shoeColor, currentUser.hairStyle);
+};
+btnRow.append(bShirt, bHair, bShoe);
+customCard.appendChild(btnRow);
+wrap.appendChild(customCard);
+// 4. TANTANG TEMAN (@USERNAME TERVERIFIKASI + STATUS ONLINE/OFFLINE)
+const duelCard = document.createElement('div');
+duelCard.style.cssText = 'background:#111623;border:1px solid rgba(239,68,68,0.45);border-radius:16px;padding:14px;margin-bottom:14px';
+duelCard.innerHTML = '⚡ TANTANG TEMAN (1V1)● Auto-Terima saat Offline';
+const duelRow = document.createElement('div');
+duelRow.style.cssText = 'display:flex;gap:6px;margin-bottom:10px';
+const inpFriend = document.createElement('input');
+inpFriend.placeholder = 'Ketik @username_ig terverifikasi...';
+inpFriend.style.cssText = 'flex:1;padding:10px;border-radius:8px;border:1px solid #334155;background:#090d16;color:#fff;font-size:12px';
+const btnChal = document.createElement('button');
+btnChal.textContent = 'Tantang';
+btnChal.style.cssText = 'padding:0 14px;border:none;border-radius:8px;background:#ef4444;color:#fff;font-weight:900;font-size:12px;cursor:pointer';
+btnChal.onclick = async function() {
+let target = inpFriend.value.trim().toLowerCase();
+if (!target) return alert('Isi @username teman dulu!');
+if (!target.startsWith('@')) target = '@' + target;
+if (target === currentUser.username) return alert('Tidak bisa menantang diri sendiri!');
+const res = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(target) + '&select=*', { headers: headers });
+const rows = await res.json();
+if (!rows || rows.length === 0) return alert('Akun ' + target + ' belum terdaftar/terverifikasi!');
+const enemy = rows;
+const myPower = (currentUser.power||10) + (currentUser.speed||10) + (currentUser.stamina||10) + (currentUser.defense||10) + (currentUser.endurance||10);
+const enPower = (enemy.power||10) + (enemy.speed||10) + (enemy.stamina||10) + (enemy.defense||10) + (enemy.endurance||10);
+const isWin = (myPower + Math.floor(Math.random() * 25)) >= (enPower + Math.floor(Math.random() * 25));
+const mulaiHasil = async function() {
+if (isWin) {
+currentUser.wins = (currentUser.wins || 0) + 1;
+currentUser.kos = (currentUser.kos || 0) + 1;
+currentUser.xp = (currentUser.xp || 0) + 40;
+currentUser.silver = (currentUser.silver || 500) + 50;
+} else {
+currentUser.losses = (currentUser.losses || 0) + 1;
+currentUser.xp = (currentUser.xp || 0) + 15;
+}
+const req = getReqXpForNextLevel(currentUser.level);
+if (currentUser.xp >= req) {
+currentUser.xp -= req;
+currentUser.level += 1;
+currentUser.points = (currentUser.points || 0) + 2;
+}
+await fetch(SUPABASE_URL + '/rest/v1/challenges', {
+method: 'POST', headers: headers,
+body: JSON.stringify({ challenger: currentUser.username, defender: enemy.username, status: 'DONE', winner: isWin ? currentUser.username : enemy.username })
+});
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+if (typeof syncPlayer === 'function') await syncPlayer();
+wrap.remove();
+initRoyalProfile();
+};
+if (typeof playFightCinema === 'function') playFightCinema(enemy.username, isWin, mulaiHasil);
+else mulaiHasil();
+};
+duelRow.append(inpFriend, btnChal);
+duelCard.appendChild(duelRow);
+const chalListBox = document.createElement('div');
+chalListBox.style.cssText = 'font-size:11px;color:#cbd5e1';
+chalListBox.textContent = 'Memuat riwayat & pemberitahuan tantangan...';
+duelCard.appendChild(chalListBox);
+fetch(SUPABASE_URL + '/rest/v1/challenges?or=(challenger.eq.' + encodeURIComponent(currentUser.username) + ',defender.eq.' + encodeURIComponent(currentUser.username) + ')&order=created_at.desc&limit=6', { headers: headers })
+.then(function(r) { return r.json(); })
+.then(function(list) {
+chalListBox.innerHTML = '';
+if (!list || list.length === 0) {
+chalListBox.textContent = 'Belum ada riwayat tantangan.';
+return;
+}
+list.forEach(function(c) {
+const menang = c.winner === currentUser.username;
+const masuk = c.defender === currentUser.username;
+const item = document.createElement('div');
+item.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#090d16;border-radius:8px;margin-bottom:5px;border:1px solid #1e293b';
+item.innerHTML =
+'' + (masuk ? '🔔 Ditantang ' + c.challenger : '⚔️ Menantang ' + c.defender) + '' +
+'' + (menang ? 'MENANG (K.O)' : 'KALAH') + '';
+chalListBox.appendChild(item);
+});
+});
+wrap.appendChild(duelCard);
+// 5. WAR AKBAR RANKED (UNDIAN BINTANG + KARTU 2 KARAKTER LAGA TERAKHIR)
+const warCard = document.createElement('div');
+warCard.style.cssText = 'background:linear-gradient(160deg,#1f1629,#0b0f19);border:1.5px solid #a855f7;border-radius:16px;padding:14px';
+warCard.innerHTML = '👑 WAR AKBAR RANKED (UNDIAN BINTANG)★ ' + currentUser.stars + '';
+const btnWarRanked = document.createElement('button');
+btnWarRanked.textContent = '⚔️ CARI LAWAN SELEVEL BINTANG & WAR';
+btnWarRanked.style.cssText = 'width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#9333ea,#6b21a8);color:#fff;font-weight:900;font-size:12px;cursor:pointer;margin-bottom:12px';
+btnWarRanked.onclick = async function() {
+btnWarRanked.textContent = '⏳ MENGUNDI LAWAN SELEVEL BINTANG...';
+const res = await fetch(SUPABASE_URL + '/rest/v1/players?username=neq.' + encodeURIComponent(currentUser.username) + '&select=*&limit=30', { headers: headers });
+const all = await res.json();
+let lawan = null;
+if (all && all.length > 0) {
+all.sort(function(a, b) {
+return Math.abs((a.stars || 10) - currentUser.stars) - Math.abs((b.stars || 10) - currentUser.stars);
+});
+const kandidat = all.slice(0, Math.min(3, all.length));
+lawan = kandidat[Math.floor(Math.random() * kandidat.length)];
+} else {
+lawan = { username: '@petarung_bayangan', school: 'STM RIVAL', stars: currentUser.stars, power: 12, speed: 12, stamina: 12, defense: 12, endurance: 12 };
+}
+const myOvr = Math.round(((currentUser.power||10)+(currentUser.speed||10)+(currentUser.stamina||10)+(currentUser.defense||10)+(currentUser.endurance||10))/5);
+const enOvr = Math.round(((lawan.power||10)+(lawan.speed||10)+(lawan.stamina||10)+(lawan.defense||10)+(lawan.endurance||10))/5);
+const isWin = (myOvr + Math.floor(Math.random() * 10)) >= (enOvr + Math.floor(Math.random() * 10));
+const simpanLagaTerakhir = async function() {
+if (isWin) {
+currentUser.stars = (currentUser.stars || 10) + 1;
+currentUser.wins = (currentUser.wins || 0) + 1;
+currentUser.kos = (currentUser.kos || 0) + 1;
+currentUser.xp = (currentUser.xp || 0) + 60;
+} else {
+currentUser.stars = Math.max(0, (currentUser.stars || 10) - 1);
+currentUser.losses = (currentUser.losses || 0) + 1;
+currentUser.xp = (currentUser.xp || 0) + 20;
+}
+const req = getReqXpForNextLevel(currentUser.level);
+if (currentUser.xp >= req) {
+currentUser.xp -= req;
+currentUser.level += 1;
+currentUser.points = (currentUser.points || 0) + 2;
+}
+const lastMatch = {
+enemyName: lawan.username,
+enemySchool: lawan.school,
+enemyStars: lawan.stars || 10,
+win: isWin
+};
+localStorage.setItem('tb_last_war', JSON.stringify(lastMatch));
+localStorage.setItem('tb_user', JSON.stringify(currentUser));
+if (typeof syncPlayer === 'function') await syncPlayer();
+wrap.remove();
+initRoyalProfile();
+};
+if (typeof playFightCinema === 'function') playFightCinema(lawan.username + ' (★' + (lawan.stars||10) + ')', isWin, simpanLagaTerakhir);
+else simpanLagaTerakhir();
+};
+warCard.appendChild(btnWarRanked);
+// Tampilan Laga Terakhir War Akbar (2 Foto Karakter + Hasil & Info Lawan di Bawahnya)
+const lastWarRaw = localStorage.getItem('tb_last_war');
+const lastWar = lastWarRaw ? JSON.parse(lastWarRaw) : { enemyName: 'Belum Bertanding', enemySchool: '-', enemyStars: currentUser.stars, win: null };
+const lastBox = document.createElement('div');
+lastBox.style.cssText = 'background:#090d16;border:1px solid #334155;border-radius:12px;padding:12px;text-align:center';
+lastBox.innerHTML = '📸 LAGA TERAKHIR WAR AKBAR';
+const vsRow = document.createElement('div');
+vsRow.style.cssText = 'display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px';
+const cvMe = document.createElement('canvas');
+cvMe.width = 110; cvMe.height = 100;
+cvMe.style.cssText = 'margin:0 auto;background:#111827;border-radius:10px;border:1px solid #22c55e';
+drawMiniAvatar(cvMe, currentUser.shirtColor, currentUser.shoeColor, currentUser.hairStyle);
+const vsMid = document.createElement('div');
+vsMid.style.cssText = 'font-weight:900;font-size:16px;color:#ef4444';
+vsMid.textContent = 'VS';
+const cvEn = document.createElement('canvas');
+cvEn.width = 110; cvEn.height = 100;
+cvEn.style.cssText = 'margin:0 auto;background:#111827;border-radius:10px;border:1px solid #ef4444';
+drawMiniAvatar(cvEn, '#1e293b', '#ef4444', 'MOHAWK');
+vsRow.append(cvMe, vsMid, cvEn);
+lastBox.appendChild(vsRow);
+const infoBottom = document.createElement('div');
+infoBottom.style.cssText = 'margin-top:8px;padding-top:8px;border-top:1px solid #1e293b;font-size:11px;line-height:1.5';
+if (lastWar.win === null) {
+infoBottom.innerHTML = 'Tekan tombol di atas untuk mulai undian War Akbar pertamamu!';
+} else {
+infoBottom.innerHTML =
+'' +
+(lastWar.win ? '🏆 MENANG K.O. (+1 ★)' : '💀 KALAH (-1 ★)') +
+'' +
+'Lawan: ' + lastWar.enemyName + ' (' + lastWar.enemySchool + ' • ★' + lastWar.enemyStars + ')';
+}
+lastBox.appendChild(infoBottom);
+warCard.appendChild(lastBox);
+wrap.appendChild(warCard);
+appDiv.appendChild(wrap);
+}
+setInterval(initRoyalProfile, 1100);
+window.getPangkatByLevel = function(lv) {
+  const pangkat = [
+    'Rank 1 • Anak Bawang',
+    'Rank 2 • Bocah Ingusan',
+    'Rank 3 • Kacung Tongkrongan',
+    'Rank 4 • Petarung Kemarin Sore',
+    'Rank 5 • Tukang Pukul Amatir',
+    'Rank 6 • Jagoan Gang Sempit',
+    'Rank 7 • Preman Pasar Malam',
+    'Rank 8 • Petarung Jalanan',
+    'Rank 9 • Algojo Gerbang',
+    'Rank 10 • Pentolan Kelas',
+    'Rank 11 • Jenderal Lapangan',
+    'Rank 12 • Panglima Basis',
+    'Rank 13 • Monster Aspal',
+    'Rank 14 • Raja Duel 1v1',
+    'Rank 15 • Momok Lintas Basis',
+    'Rank 16 • Penguasa Distrik',
+    'Rank 17 • Sang Penakluk Wilayah',
+    'Rank 18 • Legenda Hidup Jalanan',
+    'Rank 19 • Dewa Perang Aspal',
+    'Rank 20 • Kaisar Tawuran Sejati'
+  ];
+  if (lv <= 5) return '🥉 ' + pangkat[0];
+  let idx = Math.floor((lv - 6) / 10) + 1;
+  if (idx >= pangkat.length) idx = pangkat.length - 1;
+  const ikon = idx < 5 ? '🥉 ' : (idx < 10 ? '🥈 ' : (idx < 15 ? '🥇 ' : '👑 '));
+  return ikon + pangkat[idx];
+};
+async function initRoyalChatSystem() {
+  const appDiv = document.getElementById('appScreen');
+  if (!appDiv || appDiv.classList.contains('hidden')) return;
+  if (document.getElementById('royalChatBox')) return;
+  if (typeof currentUser === 'undefined' || !currentUser) return;
+
+  let activeTab = 'GLOBAL';
+  const friendKey = 'tb_friends_' + currentUser.username;
+  function getFriends() {
+    try { return JSON.parse(localStorage.getItem(friendKey) || '[]'); }
+    catch (e) { return []; }
+  }
+  function saveFriends(list) {
+    localStorage.setItem(friendKey, JSON.stringify(list));
+  }
+
+  const box = document.createElement('div');
+  box.id = 'royalChatBox';
+  box.style.cssText = 'background:linear-gradient(165deg,rgba(22,29,46,0.96),rgba(10,13,22,0.99));border:1.5px solid rgba(56,189,248,0.45);border-radius:18px;padding:15px;margin-top:14px;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,0.6)';
+
+  const header = document.createElement('div');
+  header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:10px';
+  header.innerHTML = '<span style="font-size:13px;font-weight:900;color:#38bdf8;letter-spacing:0.6px">💬 TONGKRONGAN & CHAT</span><span style="font-size:10px;color:#4ade80;font-weight:800">● LIVE</span>';
+  box.appendChild(header);
+
+  // 3 Tombol Tab Ruangan (Global, Markas Sekolah, Teman)
+  const tabRow = document.createElement('div');
+  tabRow.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px';
+
+  const tabs = [
+    { id: 'GLOBAL', label: '🌐 Global' },
+    { id: 'MARKAS', label: '🛡️ Markas' },
+    { id: 'TEMAN', label: '🤝 Teman' }
+  ];
+
+  const tabBtns = {};
+  tabs.forEach(function(t) {
+    const b = document.createElement('button');
+    b.textContent = t.label;
+    b.style.cssText = 'padding:8px 4px;border-radius:9px;border:1px solid #334155;background:#0f172a;color:#94a3b8;font-size:11px;font-weight:900;cursor:pointer';
+    b.onclick = function() {
+      activeTab = t.id;
+      updateTabStyle();
+      renderFriendPanel();
+      refreshMessages();
+    };
+    tabBtns[t.id] = b;
+    tabRow.appendChild(b);
+  });
+  box.appendChild(tabRow);
+
+  function updateTabStyle() {
+    Object.keys(tabBtns).forEach(function(k) {
+      if (k === activeTab) {
+        tabBtns[k].style.background = 'linear-gradient(135deg,#f59e0b,#d97706)';
+        tabBtns[k].style.color = '#07090e';
+        tabBtns[k].style.borderColor = '#fbbf24';
+      } else {
+        tabBtns[k].style.background = '#0f172a';
+        tabBtns[k].style.color = '#94a3b8';
+        tabBtns[k].style.borderColor = '#334155';
+      }
+    });
+  }
+
+  // Panel Khusus Add Friend (Muncul saat Tab TEMAN dipilih)
+  const friendPanel = document.createElement('div');
+  friendPanel.style.cssText = 'background:#090d16;border:1px solid #1e293b;border-radius:12px;padding:10px;margin-bottom:10px;display:none';
+  box.appendChild(friendPanel);
+
+  function renderFriendPanel() {
+    if (activeTab !== 'TEMAN') {
+      friendPanel.style.display = 'none';
+      return;
+    }
+    friendPanel.style.display = 'block';
+    friendPanel.innerHTML = '<div style="font-size:10px;font-weight:900;color:#fbbf24;margin-bottom:6px">➕ TAMBAH TEMAN (ADD FRIEND)</div>';
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:6px;margin-bottom:8px';
+
+    const inpAdd = document.createElement('input');
+    inpAdd.placeholder = 'Ketik @username_ig teman...';
+    inpAdd.style.cssText = 'flex:1;padding:8px 10px;border-radius:8px;border:1px solid #334155;background:#111827;color:#fff;font-size:11px';
+
+    const btnAdd = document.createElement('button');
+    btnAdd.textContent = '+ Add';
+    btnAdd.style.cssText = 'padding:0 12px;border:none;border-radius:8px;background:#22c55e;color:#052e16;font-weight:900;font-size:11px;cursor:pointer';
+    btnAdd.onclick = async function() {
+      let target = inpAdd.value.trim().toLowerCase();
+      if (!target) return alert('Masukkan @username teman dulu!');
+      if (!target.startsWith('@')) target = '@' + target;
+      if (target === currentUser.username) return alert('Tidak bisa menambahkan diri sendiri!');
+
+      const flist = getFriends();
+      if (flist.includes(target)) return alert(target + ' sudah ada di daftar temanmu!');
+
+      btnAdd.textContent = '...';
+      const check = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(target) + '&select=username,school', { headers: headers });
+      const rows = await check.json();
+      btnAdd.textContent = '+ Add';
+
+      if (!rows || rows.length === 0) return alert('Akun ' + target + ' tidak ditemukan!');
+      flist.push(target);
+      saveFriends(flist);
+      inpAdd.value = '';
+      alert('Berhasil berteman dengan ' + target + ' (' + rows.school + ')!');
+      renderFriendPanel();
+      refreshMessages();
+    };
+
+    row.append(inpAdd, btnAdd);
+    friendPanel.appendChild(row);
+
+    const listEl = document.createElement('div');
+    listEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px';
+    const currentFriends = getFriends();
+    if (currentFriends.length === 0) {
+      listEl.innerHTML = '<span style="font-size:10px;color:#64748b">Belum ada teman. Tambahkan @username di atas untuk mulai chat teman!</span>';
+    } else {
+      currentFriends.forEach(function(fn) {
+        const chip = document.createElement('span');
+        chip.style.cssText = 'background:#1e293b;border:1px solid #38bdf8;color:#e0f2fe;font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px';
+        chip.textContent = '🤝 ' + fn;
+        listEl.appendChild(chip);
+      });
+    }
+    friendPanel.appendChild(listEl);
+  }
+
+  // Kotak Daftar Pesan Chat
+  const msgList = document.createElement('div');
+  msgList.style.cssText = 'height:210px;overflow-y:auto;background:#090d16;border:1px solid #1e293b;border-radius:12px;padding:10px;margin-bottom:10px;font-size:12px;line-height:1.45';
+  msgList.textContent = 'Memuat obrolan...';
+  box.appendChild(msgList);
+
+  // Kolom Ketik & Kirim Pesan
+  const sendRow = document.createElement('div');
+  sendRow.style.cssText = 'display:flex;gap:6px';
+
+  const inpChat = document.createElement('input');
+  inpChat.placeholder = 'Tulis pesan obrolan...';
+  inpChat.style.cssText = 'flex:1;padding:10px 12px;border-radius:10px;border:1px solid #334155;background:#090d16;color:#fff;font-size:12px';
+
+  const btnSend = document.createElement('button');
+  btnSend.textContent = 'Kirim';
+  btnSend.style.cssText = 'padding:0 16px;border:none;border-radius:10px;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-weight:900;font-size:12px;cursor:pointer';
+  btnSend.onclick = async function() {
+    const txt = inpChat.value.trim();
+    if (!txt) return;
+    if (activeTab === 'TEMAN' && getFriends().length === 0) {
+      return alert('Tambahkan minimal 1 teman dulu di kolom Add Friend di atas!');
+    }
+    inpChat.value = '';
+    const roomTag = activeTab === 'GLOBAL' ? 'GLOBAL' : (activeTab === 'MARKAS' ? currentUser.school : 'FRIEND_ROOM');
+    await fetch(SUPABASE_URL + '/rest/v1/messages', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        sender: currentUser.username,
+        school: roomTag,
+        content: txt
+      })
+    });
+    refreshMessages();
+  };
+
+  sendRow.append(inpChat, btnSend);
+  box.appendChild(sendRow);
+  appDiv.appendChild(box);
+
+  async function refreshMessages() {
+    let url = SUPABASE_URL + '/rest/v1/messages?select=*&order=created_at.desc&limit=35';
+    if (activeTab === 'GLOBAL') {
+      url = SUPABASE_URL + '/rest/v1/messages?school=eq.GLOBAL&select=*&order=created_at.desc&limit=30';
+    } else if (activeTab === 'MARKAS') {
+      url = SUPABASE_URL + '/rest/v1/messages?school=eq.' + encodeURIComponent(currentUser.school) + '&select=*&order=created_at.desc&limit=30';
+    } else if (activeTab === 'TEMAN') {
+      url = SUPABASE_URL + '/rest/v1/messages?school=eq.FRIEND_ROOM&select=*&order=created_at.desc&limit=40';
+    }
+
+    try {
+      const res = await fetch(url, { headers: headers });
+      let rows = await res.json();
+      if (!rows) rows = [];
+
+      if (activeTab === 'TEMAN') {
+        const allowed = [currentUser.username].concat(getFriends());
+        rows = rows.filter(function(m) { return allowed.includes(m.sender); });
+      }
+
+      msgList.innerHTML = '';
+      if (rows.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'color:#64748b;text-align:center;padding-top:65px;font-size:11px';
+        empty.textContent = activeTab === 'GLOBAL'
+          ? 'Belum ada chat di Global Umum.'
+          : (activeTab === 'MARKAS' ? 'Belum ada obrolan di Markas ' + currentUser.school + '.' : 'Belum ada chat dengan daftar temanmu.');
+        msgList.appendChild(empty);
+        return;
+      }
+
+      rows.reverse().forEach(function(m) {
+        const item = document.createElement('div');
+        item.style.cssText = 'padding:6px 0;border-bottom:1px solid #151c2c';
+        const isMe = m.sender === currentUser.username;
+        const badgeText = activeTab === 'MARKAS' ? '🛡️ ' + currentUser.school : (activeTab === 'TEMAN' ? '🤝 Teman' : '🌐 Umum');
+        item.innerHTML =
+          '<strong style="color:' + (isMe ? '#4ade80' : '#fbbf24') + '">' + m.sender + '</strong> ' +
+          '<span style="font-size:9px;color:#38bdf8;background:#0f172a;padding:1px 5px;border-radius:4px">' + badgeText + '</span>' +
+          '<div style="color:#e2e8f0;margin-top:2px">' + m.content + '</div>';
+        msgList.appendChild(item);
+      });
+      msgList.scrollTop = msgList.scrollHeight;
+    } catch (e) {}
+  }
+
+  updateTabStyle();
+  renderFriendPanel();
+  refreshMessages();
+  setInterval(refreshMessages, 4000);
+}
+
+setInterval(initRoyalChatSystem, 1200);
 </script>
 </body>
 </html>
