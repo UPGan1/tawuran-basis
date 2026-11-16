@@ -1569,6 +1569,22 @@ async function initRoyalChatSystem() {
 }
 
 setInterval(initRoyalChatSystem, 1200);
+(function paksaTampilSemuaFiturBaru() {
+  function jalankan() {
+    if (typeof currentUser === 'undefined' || !currentUser) return;
+    let target = document.getElementById('appScreen');
+    if (!target) {
+      target = document.querySelector('.container') || document.body;
+      target.id = 'appScreen';
+      target.classList.remove('hidden');
+    }
+    if (typeof upgradeRoyalArenaUI === 'function') upgradeRoyalArenaUI();
+    if (typeof initRoyalMading === 'function') initRoyalMading();
+    if (typeof initRoyalProfile === 'function') initRoyalProfile();
+    if (typeof initRoyalChatSystem === 'function') initRoyalChatSystem();
+  }
+  setInterval(jalankan, 1000);
+})();
 </script>
 </body>
 </html>
