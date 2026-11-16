@@ -320,24 +320,26 @@ counterText = 'TER-COUNTER LAWAN (-8 OVR)!';
 }
 const finalScore = (myOvr + counterBonus) - enemyOvr;
 const isWin = finalScore >= 0;
-if (isWin) {
-currentUser.wins += 1;
-currentUser.points += (mode === 'KEPSEK' ? 5 : 2);
-} else {
-currentUser.losses += 1;
-}
-logBox.innerHTML = '<strong>[' + (mode === 'KEPSEK' ? 'DUEL KEPSEK SATU BASIS' : 'TAWURAN ESTAFET 3V3') + ']</strong><br>Lawan: <strong>' + enemySchool + '</strong> (OVR ' + enemyOvr + ')<br>Gaya Kamu: <strong>' + myStance + '</strong> vs Lawan: <strong>' + enemyStance + '</strong><br>Status: <span style="color:#38bdf8;">' + counterText + '</span><br>Hasil Akhir: <strong style="color:' + (isWin ? '#4ade80' : '#f87171') + ';">' + (isWin ? 'MENANG! (+Poin Latih)' : 'KALAH! Tingkatkan Stat kamu.') + '</strong>';
-await fetch(SUPABASE_URL + '/rest/v1/battles', {
-method: 'POST',
-headers: headers,
-body: JSON.stringify({
-attacker: currentUser.username,
-target_school: enemySchool,
-mode: mode,
-result: isWin ? 'WIN' : 'LOSS'
-})
+playFightCinema(enemySchool, isWin, async function() {
+  if (isWin) {
+    currentUser.wins += 1;
+    currentUser.points += (mode === 'KEPSEK' ? 5 : 2);
+  } else {
+    currentUser.losses += 1;
+  }
+  logBox.innerHTML = '<strong>[' + (mode === 'KEPSEK' ? 'DUEL KEPSEK SATU BASIS' : 'TAWURAN ESTAFET 3V3') + ']</strong><br>Lawan: <strong>' + enemySchool + '</strong> (OVR ' + enemyOvr + ')<br>Gaya Kamu: <strong>' + myStance + '</strong> vs Lawan: <strong>' + enemyStance + '</strong><br>Status: <span style="color:#38bdf8;">' + counterText + '</span><br>Hasil Akhir: <strong style="color:' + (isWin ? '#4ade80' : '#f87171') + ';">' + (isWin ? 'MENANG! (+Poin Latih)' : 'KALAH! Tingkatkan Stat kamu.') + '</strong>';
+  await fetch(SUPABASE_URL + '/rest/v1/battles', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      attacker: currentUser.username,
+      target_school: enemySchool,
+      mode: mode,
+      result: isWin ? 'WIN' : 'LOSS'
+    })
+  });
+  await syncPlayer();
 });
-await syncPlayer();
 }
 async function loadChat() {
 const res = await fetch(SUPABASE_URL + '/rest/v1/messages?select=*&order=created_at.desc&limit=20', { headers });
@@ -411,6 +413,120 @@ method: 'PATCH',
       renderGame();
     }
   };
+const VIDEO_URL_WIN = '';
+const VIDEO_URL_LOSE = '';
+
+function playFightCinema(enemyName, win, onFinish) {
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(5,7,12,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px';
+
+  const box = document.createElement('div');
+  box.style.cssText = 'max-width:440px;width:100%;background:#0f172a;border:2px solid #f59e0b;border-radius:16px;padding:14px;color:#fff;font-family:sans-serif;box-shadow:0 0 30px rgba(245,158,11,0.35)';
+
+  const title = document.createElement('div');
+  title.style.cssText = 'text-align:center;font-weight:900;font-size:12px;color:#fbbf24;margin-bottom:8px;letter-spacing:1px';
+  title.textContent = '⚔️ TAYANGAN DUEL REAL-TIME: ' + currentUser.username + ' VS ' + enemyName;
+  box.appendChild(title);
+
+  const mp4 = win ? VIDEO_URL_WIN : VIDEO_URL_LOSE;
+  if (mp4) {
+    const vid = document.createElement('video');
+    vid.src = mp4;
+    vid.autoplay = true;
+    vid.playsInline = true;
+    vid.style.cssText = 'width:100%;border-radius:12px;margin-bottom:8px;border:1px solid #334155';
+    box.appendChild(vid);
+  }
+
+  const cv = document.createElement('canvas');
+  cv.width = 400;
+  cv.height = 185;
+  cv.style.cssText = 'width:100%;background:radial-gradient(circle at center,#1e293b,#090d16);border-radius:12px;border:1px solid #334155;display:' + (mp4 ? 'none' : 'block');
+  box.appendChild(cv);
+
+  const feed = document.createElement('div');
+  feed.style.cssText = 'height:75px;overflow-y:auto;background:#07090e;border-radius:8px;padding:8px;font-size:11px;margin-top:8px;line-height:1.5;border:1px solid #1e293b';
+  box.appendChild(feed);
+
+  const btnClose = document.createElement('button');
+  btnClose.textContent = 'TUTUP & AMBIL HASIL';
+  btnClose.style.cssText = 'width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:#f59e0b;color:#000;font-weight:900;cursor:pointer;display:none';
+  btnClose.onclick = function() {
+    modal.remove();
+    if (onFinish) onFinish();
+  };
+  box.appendChild(btnClose);
+
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+
+  const ctx = cv.getContext('2d');
+  let pL = 135, pR = 265, actL = 'IDLE', actR = 'IDLE', koL = false, koR = false, spark = '', step = 0;
+
+  function drawBoy(x, y, dir, act, shirt, shoe, ko) {
+    ctx.save();
+    ctx.translate(x, y);
+    if (ko) { ctx.rotate(dir === 1 ? -1.4 : 1.4); ctx.translate(0, 22); }
+    ctx.scale(dir, 1);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.beginPath(); ctx.ellipse(0, 54, 22, 5, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#334155'; ctx.lineWidth = 7; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-6, 18); ctx.lineTo(-14, 50); ctx.stroke();
+    ctx.fillStyle = shoe; ctx.fillRect(-18, 47, 11, 6);
+    ctx.beginPath(); ctx.moveTo(6, 18);
+    if (act === 'KICK') { ctx.lineTo(44, 4); ctx.stroke(); ctx.fillRect(40, -1, 11, 7); }
+    else { ctx.lineTo(14, 50); ctx.stroke(); ctx.fillRect(10, 47, 11, 6); }
+    ctx.fillStyle = shirt; ctx.fillRect(-11, -18, 22, 36);
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(-12, -18, 6, 36); ctx.fillRect(6, -18, 6, 36);
+    ctx.fillStyle = '#fed7aa'; ctx.beginPath(); ctx.arc(0, -31, 10, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#090d16'; ctx.beginPath(); ctx.arc(0, -34, 10, Math.PI, 0); ctx.fill();
+    ctx.strokeStyle = '#fed7aa'; ctx.lineWidth = 6;
+    if (act === 'PUNCH') {
+      ctx.beginPath(); ctx.moveTo(8, -10); ctx.lineTo(44, -12); ctx.stroke();
+      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(46, -12, 5, 0, Math.PI * 2); ctx.fill();
+    } else if (act === 'BLOCK') {
+      ctx.beginPath(); ctx.moveTo(8, -10); ctx.lineTo(18, -24); ctx.stroke();
+      ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(22, -14, 22, -1.2, 1.2); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.moveTo(8, -10); ctx.lineTo(22, -14); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  const rounds = [
+    { w: 'L', m: 'PUNCH', b: true, t: currentUser.username + ' melancarkan pukulan cepat, ditangkis ' + enemyName + '!' },
+    { w: 'R', m: 'KICK', b: false, t: enemyName + ' membalas tendangan rendah!' },
+    { w: 'L', m: 'KICK', b: false, t: currentUser.username + ' membalas tendangan berputar telak ke bahu!' },
+    { w: 'R', m: 'PUNCH', b: true, t: currentUser.username + ' memasang tangkisan silang menahan hantaman!' },
+    { w: win ? 'L' : 'R', m: 'KICK', b: false, t: win ? '💥 TENDANGAN K.O! ' + enemyName + ' terpental tumbang!' : '💥 HANTAMAN K.O! ' + currentUser.username + ' terjatuh!' }
+  ];
+
+  const anim = setInterval(function() {
+    ctx.clearRect(0, 0, 400, 185);
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(0, 155, 400, 30);
+    drawBoy(pL, 104, 1, actL, '#f8fafc', '#22c55e', koL);
+    drawBoy(pR, 104, -1, actR, '#cbd5e1', '#ef4444', koR);
+    if (spark) { ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(spark, 200, 42); }
+  }, 30);
+
+  const loop = setInterval(function() {
+    if (step >= rounds.length) {
+      clearInterval(loop);
+      setTimeout(function() { clearInterval(anim); btnClose.style.display = 'block'; }, 600);
+      return;
+    }
+    const r = rounds[step];
+    if (r.w === 'L') { pL = 185; actL = r.m; actR = r.b ? 'BLOCK' : 'IDLE'; spark = r.b ? '🛡️ TANGKIS!' : '💥 DUAR!'; if (step === 4) koR = true; }
+    else { pR = 215; actR = r.m; actL = r.b ? 'BLOCK' : 'IDLE'; spark = r.b ? '🛡️ TANGKIS!' : '💥 KENAK!'; if (step === 4) koL = true; }
+    const line = document.createElement('div');
+    line.textContent = '• ' + r.t;
+    feed.appendChild(line);
+    feed.scrollTop = feed.scrollHeight;
+    setTimeout(function() { pL = 135; pR = 265; actL = 'IDLE'; actR = 'IDLE'; spark = ''; }, 500);
+    step++;
+  }, 900);
+}
 </script>
 </body>
 </html>
