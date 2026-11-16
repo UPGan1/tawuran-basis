@@ -560,13 +560,11 @@ function playTrainCinema(namaLatihan, onSelesai) {
     ctx.clearRect(0, 0, 380, 175);
     ctx.fillStyle = '#1e293b'; ctx.fillRect(0, 148, 380, 27);
 
-    // Tiang & Samsak / Ban Bekas
     ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(255, 0); ctx.lineTo(255 + ayun, 48); ctx.stroke();
     ctx.fillStyle = '#0f172a'; ctx.fillRect(236 + ayun, 48, 38, 56);
     ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2; ctx.strokeRect(236 + ayun, 48, 38, 56);
 
-    // Karakter Petarung
     ctx.save();
     ctx.translate(160, 96);
     ctx.strokeStyle = '#334155'; ctx.lineWidth = 7; ctx.lineCap = 'round';
@@ -646,7 +644,6 @@ function upgradeRoyalArenaUI() {
 
   stage.innerHTML = '';
 
-  // Baris Lencana Melayang Atas (Piagam Season 0 & Basis)
   const topRow = document.createElement('div');
   topRow.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px';
 
@@ -663,7 +660,6 @@ function upgradeRoyalArenaUI() {
   topRow.append(badgeLeft, badgeRight);
   stage.appendChild(topRow);
 
-  // Panggung Karakter Petarung di Tengah
   const arenaBox = document.createElement('div');
   arenaBox.style.cssText = 'text-align:center;margin:4px 0 8px;position:relative';
 
@@ -673,14 +669,12 @@ function upgradeRoyalArenaUI() {
   cv.style.cssText = 'display:block;margin:0 auto';
   const ctx = cv.getContext('2d');
 
-  // Sorotan Cahaya Podium Emas
   const grad = ctx.createRadialGradient(90, 124, 6, 90, 124, 68);
   grad.addColorStop(0, 'rgba(251, 191, 36, 0.75)');
   grad.addColorStop(1, 'rgba(251, 191, 36, 0)');
   ctx.fillStyle = grad;
   ctx.beginPath(); ctx.ellipse(90, 124, 68, 12, 0, 0, Math.PI * 2); ctx.fill();
 
-  // Gambar Karakter Berseragam
   ctx.save();
   ctx.translate(90, 74);
   ctx.strokeStyle = '#334155'; ctx.lineWidth = 8; ctx.lineCap = 'round';
@@ -709,7 +703,6 @@ function upgradeRoyalArenaUI() {
   arenaBox.append(nameTag, roleTag);
   stage.appendChild(arenaBox);
 
-  // Kotak Timer Hitung Mundur Tawuran Akbar (12.00 & 21.30 WIB)
   const warTimerBox = document.createElement('div');
   warTimerBox.style.cssText = 'background:rgba(6,8,13,0.88);border:1px solid rgba(239,68,68,0.55);border-radius:14px;padding:10px;text-align:center';
 
@@ -900,7 +893,6 @@ function drawMiniAvatar(canvas, shirtColor, shoeColor, hairStyle) {
   const cx = canvas.width / 2;
   const cy = canvas.height / 2 + 6;
 
-  // Sorotan bawah
   const g = ctx.createRadialGradient(cx, cy + 44, 4, cx, cy + 44, 45);
   g.addColorStop(0, 'rgba(251,191,36,0.65)');
   g.addColorStop(1, 'rgba(251,191,36,0)');
@@ -915,20 +907,17 @@ function drawMiniAvatar(canvas, shirtColor, shoeColor, hairStyle) {
   ctx.fillStyle = shoeColor || '#dc2626';
   ctx.fillRect(-17, 39, 11, 5); ctx.fillRect(7, 39, 11, 5);
 
-  // Seragam
   ctx.fillStyle = shirtColor || '#f8fafc';
   ctx.fillRect(-12, -18, 24, 34);
   ctx.fillStyle = '#0f172a';
   ctx.fillRect(-13, -18, 6, 34); ctx.fillRect(7, -18, 6, 34);
 
-  // Kepala & Rambut
   ctx.fillStyle = '#fed7aa';
   ctx.beginPath(); ctx.arc(0, -30, 10, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = hairStyle === 'PIRANG' ? '#facc15' : (hairStyle === 'MERAH' ? '#ef4444' : '#090d16');
   ctx.beginPath(); ctx.arc(0, -33, 10, Math.PI, 0); ctx.fill();
   if (hairStyle === 'MOHAWK') { ctx.fillRect(-3, -44, 6, 8); }
 
-  // Lengan
   ctx.strokeStyle = '#fed7aa'; ctx.lineWidth = 5;
   ctx.beginPath(); ctx.moveTo(-11, -11); ctx.lineTo(-20, 4); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(11, -11); ctx.lineTo(20, 4); ctx.stroke();
@@ -941,7 +930,6 @@ async function initRoyalProfile() {
   if (document.getElementById('royalProfileSection')) return;
   if (typeof currentUser === 'undefined' || !currentUser) return;
 
-  // Pastikan pendatang baru mulai dari 10 per stat + 10 poin bonus
   if (!currentUser._init10Done && currentUser.role !== 'KEPALA SEKOLAH') {
     if (currentUser.power === 50 && currentUser.speed === 50 && currentUser.defense === 50) {
       currentUser.power = 10;
@@ -971,7 +959,6 @@ async function initRoyalProfile() {
   wrap.id = 'royalProfileSection';
   wrap.style.cssText = 'margin-top:14px;margin-bottom:20px';
 
-  // 1. KARTU IDENTITAS PROFIL, JULUKAN, PANGKAT, KEPSEK, REKOR & EXP
   const card = document.createElement('div');
   card.style.cssText = 'background:linear-gradient(165deg,rgba(22,29,46,0.96),rgba(10,13,22,0.99));border:1.5px solid rgba(245,158,11,0.5);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 10px 30px rgba(0,0,0,0.6)';
 
@@ -1001,7 +988,6 @@ async function initRoyalProfile() {
   topHead.append(leftInfo, ovrBox);
   card.appendChild(topHead);
 
-  // Pilih 20 Julukan Keren
   const titleRow = document.createElement('div');
   titleRow.style.cssText = 'margin-top:12px;display:flex;gap:6px;align-items:center';
   const selTitle = document.createElement('select');
@@ -1023,7 +1009,6 @@ async function initRoyalProfile() {
   titleRow.appendChild(selTitle);
   card.appendChild(titleRow);
 
-  // Bar EXP + Level
   const reqXp = getReqXpForNextLevel(currentUser.level);
   const pctXp = Math.min(100, Math.round((currentUser.xp / reqXp) * 100));
   const expWrap = document.createElement('div');
@@ -1038,7 +1023,6 @@ async function initRoyalProfile() {
     '</div>';
   card.appendChild(expWrap);
 
-  // Rekor Per Season (Menang, Kalah, Seri, K.O)
   const recGrid = document.createElement('div');
   recGrid.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;text-align:center';
   [
@@ -1055,7 +1039,6 @@ async function initRoyalProfile() {
   card.appendChild(recGrid);
   wrap.appendChild(card);
 
-  // 2. KARTU 5 STAT PETARUNG (Pukulan, Kecepatan, Stamina, Pertahanan, Daya Tahan)
   const statCard = document.createElement('div');
   statCard.style.cssText = 'background:#111623;border:1px solid rgba(245,158,11,0.35);border-radius:16px;padding:14px;margin-bottom:14px';
   statCard.innerHTML = '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:900;color:#fbbf24;margin-bottom:10px"><span>📊 5 STAT PETARUNG</span><span>Sisa Poin: <strong style="color:#4ade80">' + (currentUser.points || 0) + '</strong></span></div>';
@@ -1097,7 +1080,6 @@ row.append(topR, barBg);
 statCard.appendChild(row);
 });
 wrap.appendChild(statCard);
-// 3. PETARUNG KAMU (ROMBAK TAMPILAN + DOMPET GOLD & SILVER)
 const customCard = document.createElement('div');
 customCard.style.cssText = 'background:#111623;border:1px solid rgba(245,158,11,0.35);border-radius:16px;padding:14px;margin-bottom:14px';
 customCard.innerHTML =
@@ -1143,7 +1125,6 @@ drawMiniAvatar(previewCv, currentUser.shirtColor, currentUser.shoeColor, current
 btnRow.append(bShirt, bHair, bShoe);
 customCard.appendChild(btnRow);
 wrap.appendChild(customCard);
-// 4. TANTANG TEMAN (@USERNAME TERVERIFIKASI + STATUS ONLINE/OFFLINE)
 const duelCard = document.createElement('div');
 duelCard.style.cssText = 'background:#111623;border:1px solid rgba(239,68,68,0.45);border-radius:16px;padding:14px;margin-bottom:14px';
 duelCard.innerHTML = '⚡ TANTANG TEMAN (1V1)● Auto-Terima saat Offline';
@@ -1221,7 +1202,6 @@ chalListBox.appendChild(item);
 });
 });
 wrap.appendChild(duelCard);
-// 5. WAR AKBAR RANKED (UNDIAN BINTANG + KARTU 2 KARAKTER LAGA TERAKHIR)
 const warCard = document.createElement('div');
 warCard.style.cssText = 'background:linear-gradient(160deg,#1f1629,#0b0f19);border:1.5px solid #a855f7;border-radius:16px;padding:14px';
 warCard.innerHTML = '👑 WAR AKBAR RANKED (UNDIAN BINTANG)★ ' + currentUser.stars + '';
@@ -1278,7 +1258,6 @@ if (typeof playFightCinema === 'function') playFightCinema(lawan.username + ' (�
 else simpanLagaTerakhir();
 };
 warCard.appendChild(btnWarRanked);
-// Tampilan Laga Terakhir War Akbar (2 Foto Karakter + Hasil & Info Lawan di Bawahnya)
 const lastWarRaw = localStorage.getItem('tb_last_war');
 const lastWar = lastWarRaw ? JSON.parse(lastWarRaw) : { enemyName: 'Belum Bertanding', enemySchool: '-', enemyStars: currentUser.stars, win: null };
 const lastBox = document.createElement('div');
@@ -1370,7 +1349,6 @@ async function initRoyalChatSystem() {
   header.innerHTML = '<span style="font-size:13px;font-weight:900;color:#38bdf8;letter-spacing:0.6px">💬 TONGKRONGAN & CHAT</span><span style="font-size:10px;color:#4ade80;font-weight:800">● LIVE</span>';
   box.appendChild(header);
 
-  // 3 Tombol Tab Ruangan (Global, Markas Sekolah, Teman)
   const tabRow = document.createElement('div');
   tabRow.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px';
 
@@ -1410,7 +1388,6 @@ async function initRoyalChatSystem() {
     });
   }
 
-  // Panel Khusus Add Friend (Muncul saat Tab TEMAN dipilih)
   const friendPanel = document.createElement('div');
   friendPanel.style.cssText = 'background:#090d16;border:1px solid #1e293b;border-radius:12px;padding:10px;margin-bottom:10px;display:none';
   box.appendChild(friendPanel);
@@ -1475,7 +1452,7 @@ async function initRoyalChatSystem() {
     friendPanel.appendChild(listEl);
   }
 
-  // Kotak Daftar Pesan Chat
+
   const msgList = document.createElement('div');
   msgList.style.cssText = 'height:210px;overflow-y:auto;background:#090d16;border:1px solid #1e293b;border-radius:12px;padding:10px;margin-bottom:10px;font-size:12px;line-height:1.45';
   msgList.textContent = 'Memuat obrolan...';
@@ -1584,6 +1561,190 @@ setInterval(initRoyalChatSystem, 1200);
     if (typeof initRoyalChatSystem === 'function') initRoyalChatSystem();
   }
   setInterval(jalankan, 1000);
+})();
+(function initGerbangTiketSPP() {
+  const LINK_BAYAR_SPP = 'https://saweria.co/widgets/topup?streamKey=4efaca2e1fe41dc015ae9ec2e9ab50c9;
+
+  function kunciHalamanDaftar() {
+    const authBox = document.getElementById('authScreen') || document.querySelector('.card');
+    if (!authBox || authBox.classList.contains('hidden')) return;
+    if (document.getElementById('sppGatePanel')) return;
+
+    const gate = document.createElement('div');
+    gate.id = 'sppGatePanel';
+    gate.style.cssText = 'margin-top:12px;padding:12px;background:#090d16;border:1.5px solid #f59e0b;border-radius:12px';
+
+    gate.innerHTML =
+      '<div style="font-size:11px;font-weight:900;color:#fbbf24;margin-bottom:6px">🎟️ WAJIB KODE TIKET SPP (AKUN BARU)</div>' +
+      '<div style="font-size:10.5px;color:#cbd5e1;line-height:1.45;margin-bottom:8px">' +
+        '• <strong>4 Sekolah Umum:</strong> SPP <strong>Rp 1.000</strong> / Season<br>' +
+        '• <strong>Sekolah VIP AO:</strong> SPP <strong>Rp 100.000</strong> (Fasilitas Khusus)<br>' +
+        '<em>(Akun lama yang sudah terdaftar cukup isi Username IG & 4 Digit PIN)</em>' +
+      '</div>';
+
+    const inpTicket = document.createElement('input');
+    inpTicket.id = 'sppTicketInput';
+    inpTicket.placeholder = 'Masukkan Kode Tiket SPP (khusus pendaftar baru)...';
+    inpTicket.style.cssText = 'width:100%;box-sizing:border-box;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid #f59e0b;background:#111827;color:#fde047;font-weight:800;font-size:12px;text-transform:uppercase';
+
+    const btnBayar = document.createElement('a');
+    btnBayar.href = LINK_BAYAR_SPP;
+    btnBayar.target = '_blank';
+    btnBayar.textContent = '💳 BAYAR SPP & AMBIL KODE TIKET';
+    btnBayar.style.cssText = 'display:block;text-align:center;padding:9px;border-radius:8px;background:#1e293b;border:1px solid #38bdf8;color:#38bdf8;font-size:11px;font-weight:900;text-decoration:none';
+
+    gate.append(inpTicket, btnBayar);
+    authBox.appendChild(gate);
+  }
+
+  window.handleAuth = async function() {
+    const uEl = document.getElementById('usernameInput') || document.querySelector('input[type="text"]');
+    const pEl = document.getElementById('pinInput') || document.querySelector('input[type="password"]');
+    const tEl = document.getElementById('sppTicketInput');
+
+    let username = (uEl ? uEl.value : '').trim().toLowerCase();
+    const pin = (pEl ? pEl.value : '').trim();
+    const ticket = (tEl ? tEl.value : '').trim().toUpperCase();
+
+    if (!username) return alert('Isi @username_ig asli kamu dulu!');
+    if (!username.startsWith('@')) username = '@' + username;
+    if (!/^@[a-z0-9._]{3,30}$/.test(username)) {
+      return alert('Format username IG tidak valid! Gunakan huruf, angka, titik, atau garis bawah.');
+    }
+    if (pin.length !== 4 || isNaN(pin)) return alert('PIN wajib 4 digit angka!');
+
+    try {
+      const res = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(username) + '&select=*', { headers: headers });
+      const rows = await res.json();
+
+      if (rows && rows.length > 0) {
+        if (rows[0].pin !== pin) return alert('PIN salah! Masukkan 4 digit PIN yang benar.');
+        currentUser = rows[0];
+        localStorage.setItem('tb_user', JSON.stringify(currentUser));
+        location.reload();
+        return;
+      }
+
+      const isOwner = (username === '@rdo.iny_' || username === '@rdo.iny');
+      let finalSchool = '';
+      let isVipTicket = false;
+
+      if (isOwner) {
+        finalSchool = 'SEKOLAH VIP AO';
+      } else {
+        
+        if (!ticket) {
+          return alert('Pendaftaran baru terkunci! Masukkan Kode Tiket SPP (Rp 1.000 Umum / Rp 100.000 VIP).');
+        }
+        const tRes = await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(ticket) + '&is_used=eq.false&select=*', { headers: headers });
+        const tRows = await tRes.json();
+
+        if (!tRows || tRows.length === 0) {
+          return alert('Kode Tiket SPP tidak valid atau sudah hangus dipakai orang lain!');
+        }
+
+        const tiketData = tRows[0];
+        isVipTicket = (tiketData.rank_level >= 10);
+
+        if (isVipTicket) {
+          finalSchool = 'SEKOLAH VIP AO';
+        } else {
+          const pilihan = typeof selectedSchool !== 'undefined' ? selectedSchool : '';
+          const sekolahUmum = ['STM BOEDOET 145', 'STM KAMPUNG JAWA', 'STM PENERBANGAN', 'SMK KAPAL 69'];
+          if (!sekolahUmum.includes(pilihan)) {
+            return alert('Tiket SPP Rp 1.000 hanya untuk 4 Sekolah Umum! Silakan klik salah satu dari 4 sekolah umum.');
+          }
+          finalSchool = pilihan;
+        }
+
+        await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(ticket), {
+          method: 'PATCH',
+          headers: headers,
+          body: JSON.stringify({ is_used: true, used_by: username })
+        });
+      }
+
+      const newPlayer = {
+        username: username,
+        pin: pin,
+        school: finalSchool,
+        power: isOwner ? 99 : 10,
+        speed: isOwner ? 99 : 10,
+        defense: isOwner ? 99 : 10,
+        stamina: isOwner ? 99 : 10,
+        endurance: isOwner ? 99 : 10,
+        points: isOwner ? 50 : 10,
+        level: isOwner ? 19 : 1,
+        xp: 0,
+        stars: isOwner ? 50 : 10,
+        silver: isOwner ? 5000 : 500,
+        gold: isOwner ? 999 : (isVipTicket ? 500 : 0),
+        donor_rank: isOwner ? 10 : (isVipTicket ? 10 : 0),
+        role: isOwner ? 'KEPALA SEKOLAH' : 'SISWA',
+        title: isOwner ? 'Kaisar Tawuran Sejati' : 'Anak Bawang'
+      };
+
+      const ins = await fetch(SUPABASE_URL + '/rest/v1/players', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(newPlayer)
+      });
+      const created = await ins.json();
+      currentUser = created[0];
+      localStorage.setItem('tb_user', JSON.stringify(currentUser));
+      alert('Pendaftaran Berhasil! Selamat datang di ' + finalSchool + '!');
+      location.reload();
+    } catch (err) {
+      alert('Terjadi kesalahan koneksi: ' + err.message);
+    }
+  };
+
+  function tambahGeneratorTiketKepsek() {
+    if (typeof currentUser === 'undefined' || !currentUser) return;
+    if (currentUser.role !== 'KEPALA SEKOLAH' && currentUser.username !== '@rdo.iny_') return;
+    const madingBox = document.getElementById('royalMadingBox');
+    if (!madingBox || document.getElementById('kepsekTicketGen')) return;
+
+    const gen = document.createElement('div');
+    gen.id = 'kepsekTicketGen';
+    gen.style.cssText = 'background:#090d16;border:1.5px solid #22c55e;border-radius:12px;padding:12px;margin-bottom:12px';
+    gen.innerHTML = '<div style="font-size:11px;font-weight:900;color:#4ade80;margin-bottom:8px">🎟️ MESIN CETAK TIKET SPP (KHUSUS OWNER)</div>';
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px';
+
+    async function cetakTiket(jenis) {
+      const acak = Math.floor(1000 + Math.random() * 9000);
+      const kode = (jenis === 'VIP' ? 'VIPAO-' : 'UMUM-') + acak;
+      const lvlRank = jenis === 'VIP' ? 10 : 1;
+
+      await fetch(SUPABASE_URL + '/rest/v1/vip_codes', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ code: kode, rank_level: lvlRank, is_used: false })
+      });
+      prompt('Tiket ' + jenis + ' berhasil dicetak! Salin dan berikan ke pembeli SPP:', kode);
+    }
+
+    const bUmum = document.createElement('button');
+    bUmum.textContent = '+ Cetak Tiket Umum (Rp 1rb)';
+    bUmum.style.cssText = 'padding:10px 6px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:10.5px;font-weight:900;cursor:pointer';
+    bUmum.onclick = function() { cetakTiket('UMUM'); };
+
+    const bVip = document.createElement('button');
+    bVip.textContent = '+ Cetak Tiket VIP (Rp 100rb)';
+    bVip.style.cssText = 'padding:10px 6px;border:none;border-radius:8px;background:#9333ea;color:#fff;font-size:10.5px;font-weight:900;cursor:pointer';
+    bVip.onclick = function() { cetakTiket('VIP'); };
+
+    row.append(bUmum, bVip);
+    gen.appendChild(row);
+    madingBox.insertBefore(gen, madingBox.children[1]);
+  }
+
+  setInterval(function() {
+    kunciHalamanDaftar();
+    tambahGeneratorTiketKepsek();
+  }, 900);
 })();
 </script>
 </body>
