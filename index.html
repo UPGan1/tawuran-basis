@@ -75,14 +75,11 @@
     .fight-modal { position: fixed; inset: 0; background: rgba(5, 7, 12, 0.94); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 14px; }
     .fight-box { max-width: 450px; width: 100%; background: #0f172a; border: 2px solid #f59e0b; border-radius: 18px; padding: 14px; box-shadow: 0 0 40px rgba(245,158,11,0.3); }
     .hp-row { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 8px; font-size: 11px; font-weight: 800; }
-Gunakan kode dengan hati-hati.
 .hp-bar { height: 10px; background: #1e293b; border-radius: 6px; overflow: hidden; margin-top: 3px; }
 .hp-fill-left { height: 100%; background: #22c55e; transition: width 0.25s; }
 .hp-fill-right { height: 100%; background: #ef4444; transition: width 0.25s; }
 canvas { width: 100%; background: radial-gradient(circle at center, #1e293b, #090d16); border-radius: 12px; border: 1px solid #334155; display: block; }
 .fight-feed { height: 85px; overflow-y: auto; background: #07090e; border-radius: 8px; padding: 8px; font-size: 11px; margin-top: 8px; line-height: 1.45; color: #e2e8f0; border: 1px solid #1e293b; }
-
-
 👊 TAWURAN BASIS
 SEASON 0 • ROYAL ARENA
 
@@ -374,7 +371,7 @@ try {
 const res = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(username) + '&select=*', { headers: headers });
 if (!res.ok) throw new Error('Gagal membaca data (' + res.status + ')');
 const rows = await res.json();
-const existing = rows.length > 0 ? rows[0] : null;
+const existing = rows.length > 0 ? rows : null;
 if (existing) {
 if (existing.pin !== pin) {
 alert('PIN salah! Coba masukkan 4 digit PIN yang benar.');
@@ -413,7 +410,7 @@ body: JSON.stringify(newPlayer)
 });
 if (!insRes.ok) throw new Error('Gagal mendaftarkan akun (' + insRes.status + ')');
 const inserted = await insRes.json();
-currentUser = inserted[0];
+currentUser = inserted;
 }
 localStorage.setItem('tb_user_v2', JSON.stringify(currentUser));
 initApp();
@@ -487,8 +484,8 @@ document.getElementById('trophyDuelTier').innerText = 'Trofi Perunggu';
 document.getElementById('trophyRankName').innerText = 'Rank ' + (currentUser.donor_rank || 0) + ' VIP';
 const stats = [['Pow', currentUser.power || 50], ['Spd', currentUser.speed || 50], ['Sta', currentUser.stamina || 50], ['Def', currentUser.defense || 50], ['End', currentUser.endurance || 50]];
 stats.forEach(function(item) {
-document.getElementById('st' + item[0]).innerText = item[1];
-document.getElementById('bar' + item[0]).style.width = Math.min(100, item[1]) + '%';
+document.getElementById('st' + item).innerText = item;
+document.getElementById('bar' + item).style.width = Math.min(100, item) + '%';
 });
 const sparBtn = document.getElementById('sparringToggleBtn');
 if (currentUser.is_sparring) {
@@ -617,8 +614,7 @@ ctx.moveTo(8, -12);
 ctx.lineTo(20, -4);
 ctx.lineTo(24, -18);
 ctx.stroke();
-ctx
-.fillStyle = '#fed7aa';
+ctx.fillStyle = '#fed7aa';
 ctx.beginPath();
 ctx.arc(24, -20, 5, 0, Math.PI * 2);
 ctx.fill();
@@ -810,9 +806,9 @@ async function loadLeaderboard() {
 const res = await fetch(SUPABASE_URL + '/rest/v1/players?select=username,school,stars,wins,losses&order=stars.desc&limit=50', { headers: headers });
 const list = await res.json();
 if (!list || list.length === 0) return;
-const p1 = list[0] || { username: '-', stars: 0 };
-const p2 = list[1] || { username: '-', stars: 0 };
-const p3 = list[2] || { username: '-', stars: 0 };
+const p1 = list || { username: '-', stars: 0 };
+const p2 = list || { username: '-', stars: 0 };
+const p3 = list || { username: '-', stars: 0 };
 document.getElementById('top3Container').innerHTML =
 '#2' + p2.username + '★ ' + (p2.stars || 10) + '' +
 '👑 #1' + p1.username + '★ ' + (p1.stars || 10) + '' +
@@ -870,7 +866,7 @@ if (target === currentUser.username) return alert('Tidak bisa menantang diri sen
 const check = await fetch(SUPABASE_URL + '/rest/v1/players?username=eq.' + encodeURIComponent(target) + '&select=*', { headers: headers });
 const rows = await check.json();
 if (!rows || rows.length === 0) return alert('Pemain ' + target + ' tidak ditemukan!');
-const enemy = rows[0];
+const enemy = rows;
 const myOvr = calcOvr(currentUser);
 const enOvr = calcOvr(enemy);
 const isWin = (myOvr + Math.floor(Math.random() * 12)) >= (enOvr + Math.floor(Math.random() * 12));
@@ -969,7 +965,7 @@ if (!code) return alert('Masukkan kode voucher dulu!');
 const res = await fetch(SUPABASE_URL + '/rest/v1/vip_codes?code=eq.' + encodeURIComponent(code) + '&is_used=eq.false&select=*', { headers: headers });
 const rows = await res.json();
 if (!rows || rows.length === 0) return alert('Kode tidak valid atau sudah dipakai!');
-const data = rows[0];
+const data = rows;
 const newRank = Math.min(10, data.rank_level || 1);
 currentUser.donor_rank = Math.max(currentUser.donor_rank || 0, newRank);
 currentUser.gold = (currentUser.gold || 0) + (newRank * 100);
